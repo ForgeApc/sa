@@ -1,0 +1,7 @@
+/* App-level overrides - all styles live in index.css */
+
+@media (max-width: 768px) {
+  nav { display: none !important; }
+  .mobile-nav { display: flex !important; }
+  main { padding-bottom: 70px; }
+}
