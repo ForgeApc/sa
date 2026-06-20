@@ -5,8 +5,9 @@ import PerformanceChart from '../components/PerformanceChart';
 import { portfolioData } from '../data/mockData';
 import { Bell, Settings } from 'lucide-react';
 
+type Page = 'dashboard' | 'holdings' | 'candidates' | 'trades' | 'settings';
 interface DashboardProps {
-  onNav: (page: string) => void;
+  onNav: (page: Page) => void;
 }
 
 export default function Dashboard({ onNav }: DashboardProps) {

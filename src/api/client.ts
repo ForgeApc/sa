@@ -39,6 +39,8 @@ export const api = {
   backtest: (months = 6) => request(`/stocks/backtest?months=${months}`),
 
   status: () => request('/stocks/status'),
+
+  livePrices: () => request('/stocks/live-prices'),
 };
 
 export function saveToken(token: string) {

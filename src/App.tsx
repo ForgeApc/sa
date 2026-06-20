@@ -10,6 +10,7 @@ import TradeHistory from './pages/TradeHistory';
 import Settings from './pages/Settings';
 import { LayoutDashboard, TrendingUp, Rocket, BookOpen, Settings2, Zap, LogOut } from 'lucide-react';
 import { clearToken } from './api/client';
+import LiveTicker from './components/LiveTicker';
 
 type Page = 'dashboard' | 'holdings' | 'candidates' | 'trades' | 'settings';
 type AuthStep = 'landing' | 'portfolio-setup' | 'app';
@@ -85,9 +86,10 @@ export default function App() {
         position: 'sticky', top: 0, height: '100vh',
         display: 'flex', flexDirection: 'column',
         padding: '20px 12px',
-        background: 'rgba(10,14,20,0.75)',
-        backdropFilter: 'blur(20px)',
-        borderRight: '1px solid var(--border-light)',
+        background: 'rgba(255,255,255,0.04)',
+        backdropFilter: 'blur(40px) saturate(160%)',
+        WebkitBackdropFilter: 'blur(40px) saturate(160%)',
+        borderRight: '1px solid rgba(255,255,255,0.10)',
         zIndex: 50,
       }}>
         <div style={{ padding: '8px 12px', marginBottom: '24px' }}>
@@ -150,7 +152,8 @@ export default function App() {
 
       {/* Main content */}
       <main style={{ flex: 1, overflowY: 'auto', overflowX: 'hidden' }}>
-        <div style={{ position: 'sticky', top: 0, zIndex: 40, background: 'rgba(10,14,20,0.8)', backdropFilter: 'blur(20px)', borderBottom: '1px solid var(--border)', padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <LiveTicker />
+        <div style={{ position: 'sticky', top: 0, zIndex: 40, background: 'rgba(6,8,16,0.85)', backdropFilter: 'blur(40px) saturate(160%)', borderBottom: '1px solid var(--border)', padding: '12px 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
           <div style={{ fontSize: '16px', fontWeight: 700 }}>{navItems.find(n => n.id === page)?.label}</div>
           <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
             <div style={{ fontSize: '12px', color: 'var(--text-muted)' }}>
