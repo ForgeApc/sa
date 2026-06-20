@@ -11,6 +11,7 @@ import Settings from './pages/Settings';
 import { LayoutDashboard, TrendingUp, Rocket, BookOpen, Settings2, Zap, LogOut } from 'lucide-react';
 import { clearToken } from './api/client';
 import LiveTicker from './components/LiveTicker';
+import { useStretchyGlass } from './hooks/useStretchyGlass';
 
 type Page = 'dashboard' | 'holdings' | 'candidates' | 'trades' | 'settings';
 type AuthStep = 'landing' | 'portfolio-setup' | 'app';
@@ -24,6 +25,7 @@ const navItems: { id: Page; label: string; icon: any }[] = [
 ];
 
 export default function App() {
+  useStretchyGlass();
   const [authStep, setAuthStep] = useState<AuthStep>('landing');
   const [email, setEmail] = useState('');
   const [portfolioSize, setPortfolioSize] = useState<number>(10000);
