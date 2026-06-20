@@ -54,7 +54,14 @@ router.post('/register', async (req, res) => {
     });
     writeDB(db);
 
-    const { previewUrl } = await sendVerificationEmail(email, code);
+    let previewUrl = null;
+    try {
+      const result = await sendVerificationEmail(email, code);
+      previewUrl = result.previewUrl;
+    } catch (emailErr) {
+      console.error('EMAIL SEND FAILED:', emailErr.message, emailErr.code, emailErr.response);
+      return res.status(500).json({ error: `Email failed: ${emailErr.message}` });
+    }
     res.json({ success: true, message: 'Verification code sent', devPreviewUrl: previewUrl });
   } catch (err) {
     console.error('Register error:', err);
