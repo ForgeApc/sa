@@ -3,6 +3,7 @@ import express from 'express';
 import cors from 'cors';
 import authRoutes from './routes/auth.js';
 import stockRoutes from './routes/stocks.js';
+import { warmTransporter } from './services/email.js';
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -37,4 +38,5 @@ app.listen(PORT, () => {
   console.log(`\n🚀 StockBot API → http://localhost:${PORT}`);
   console.log('   POST /api/auth/register  · /api/auth/verify  · /api/auth/login');
   console.log('   GET  /api/stocks/top-picks  · /api/stocks/backtest\n');
+  warmTransporter();
 });

@@ -47,7 +47,7 @@ router.post('/register', async (req, res) => {
     db.users = db.users.filter(u => u.email !== email.toLowerCase());
     db.users.push({
       email: email.toLowerCase(),
-      passwordHash: await bcrypt.hash(password, 12),
+      passwordHash: await bcrypt.hash(password, 10),
       verified: false,
       portfolioSize: null,
       createdAt: new Date().toISOString(),

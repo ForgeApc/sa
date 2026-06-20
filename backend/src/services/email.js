@@ -43,11 +43,12 @@ async function buildTransporter() {
   }
 
   // ── Gmail ────────────────────────────────────────────────────────────────
-  if (e.GMAIL_USER && e.GMAIL_APP_PASSWORD) {
+  if (e.GMAIL_USER && (e.GMAIL_PASS || e.GMAIL_APP_PASSWORD)) {
     providerName = 'Gmail';
     return nodemailer.createTransport({
       service: 'gmail',
-      auth: { user: e.GMAIL_USER, pass: e.GMAIL_APP_PASSWORD },
+      auth: { user: e.GMAIL_USER, pass: e.GMAIL_PASS || e.GMAIL_APP_PASSWORD },
+      pool: true,
     });
   }
 
@@ -136,4 +137,8 @@ export async function sendVerificationEmail(to, code) {
 
 export function getEmailProvider() {
   return providerName;
+}
+
+export async function warmTransporter() {
+  await getTransporter();
 }
