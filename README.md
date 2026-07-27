@@ -35,9 +35,9 @@ needs `name`, `icon` (an [Iconify](https://icon-sets.iconify.design/) name), `ta
 `desc`, `features` and `script`. Adding an entry updates the grid, the search index and
 the related-scripts suggestions automatically.
 
-**Discord links** are `https://discord.gg` with no invite code, in four places: the nav,
-the About page CTA, the game-page help card, and the social icons in all three footers.
-The footer social links (Discord, YouTube, Telegram) are all still `href="#"`.
+**Discord links** point at `https://discord.gg/pollutedhub` in six places: the nav, the
+About page CTA, the game-page help card, and the Discord icon in each of the three
+footers. The YouTube and Telegram footer icons are still `href="#"` placeholders.
 
 ## Known caveats
 
