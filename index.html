@@ -1,13 +1,375 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>stock-predictor</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Polluted Hub — The Free Roblox Script Hub. No Key System.</title>
+<meta name="description" content="Polluted Hub is a free Roblox script hub with no key system, 40+ supported games, same-day updates and a clean UI. Join the Discord and start executing in seconds." />
+<link rel="icon" href="assets/logo.svg" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div class="bg-blobs" aria-hidden="true">
+  <span class="blob blob-1"></span>
+  <span class="blob blob-2"></span>
+  <span class="blob blob-3"></span>
+  <span class="grid-floor"></span>
+</div>
+
+<header class="navbar glass">
+  <div class="nav-inner">
+    <a href="#home" class="brand">
+      <img src="assets/logo.svg" alt="Polluted Hub logo" class="brand-logo" />
+      <span class="brand-name">Polluted<em>Hub</em></span>
+    </a>
+
+    <nav class="nav-links" id="navLinks">
+      <a href="#games">Games</a>
+      <a href="#preview">Preview</a>
+      <a href="#why">Why Us</a>
+      <a href="#discord">Discord</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+
+    <div class="nav-cta">
+      <a href="#discord" class="btn btn-discord">
+        <svg class="ico-discord" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.3 5.3A16.5 16.5 0 0 0 15.2 4l-.3.6a12.6 12.6 0 0 1 3.6 1.9 15.9 15.9 0 0 0-13 0A12.6 12.6 0 0 1 9.1 4.6L8.8 4a16.5 16.5 0 0 0-4.1 1.3C2 9.4 1.3 13.4 1.6 17.3a16.7 16.7 0 0 0 5.1 2.6l1.1-1.6a10.8 10.8 0 0 1-1.7-.8l.4-.3a11.8 11.8 0 0 0 10.1 0l.4.3a10.8 10.8 0 0 1-1.7.8l1.1 1.6a16.7 16.7 0 0 0 5.1-2.6c.4-4.5-.7-8.5-2.2-12ZM8.5 14.9c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm7 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/></svg>
+        Discord
+      </a>
+      <a href="#download" class="btn btn-primary">Get Script</a>
+    </div>
+
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<main>
+
+  <!-- HERO -->
+  <section id="home" class="hero">
+    <div class="hero-content">
+      <span class="pill glass">
+        <span class="dot dot-green"></span> No key system &nbsp;·&nbsp; Updated 27 Jul 2026
+      </span>
+
+      <h1>Free Roblox scripts.<br /><span class="text-gradient">Zero keys.</span> Zero waiting.</h1>
+
+      <p class="hero-sub">
+        Polluted Hub loads instantly — no key pages, no link loops, no premium wall.
+        One script, 40+ supported games, patched the same day they break.
+      </p>
+
+      <div class="hero-actions">
+        <a href="#download" class="btn btn-primary btn-lg">Copy Script</a>
+        <a href="#discord" class="btn btn-discord btn-lg">
+          <svg class="ico-discord" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.3 5.3A16.5 16.5 0 0 0 15.2 4l-.3.6a12.6 12.6 0 0 1 3.6 1.9 15.9 15.9 0 0 0-13 0A12.6 12.6 0 0 1 9.1 4.6L8.8 4a16.5 16.5 0 0 0-4.1 1.3C2 9.4 1.3 13.4 1.6 17.3a16.7 16.7 0 0 0 5.1 2.6l1.1-1.6a10.8 10.8 0 0 1-1.7-.8l.4-.3a11.8 11.8 0 0 0 10.1 0l.4.3a10.8 10.8 0 0 1-1.7.8l1.1 1.6a16.7 16.7 0 0 0 5.1-2.6c.4-4.5-.7-8.5-2.2-12ZM8.5 14.9c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm7 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/></svg>
+          Join Discord
+        </a>
+      </div>
+
+      <div class="hero-stats">
+        <div class="stat"><span class="stat-num">40+</span><span class="stat-label">Games</span></div>
+        <div class="stat"><span class="stat-num">85K+</span><span class="stat-label">Members</span></div>
+        <div class="stat"><span class="stat-num">$0</span><span class="stat-label">Forever</span></div>
+        <div class="stat"><span class="stat-num">24/7</span><span class="stat-label">Support</span></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <img src="assets/logo.svg" alt="Polluted Hub" class="hero-logo" />
+      <div class="mock-window glass">
+        <div class="mock-titlebar">
+          <span class="mock-dot"></span><span class="mock-dot"></span><span class="mock-dot"></span>
+          <span class="mock-title">executor</span>
+        </div>
+        <div class="mock-body">
+          <p><span class="tok-comment">-- Polluted Hub | one script, every game</span></p>
+          <p><span class="tok-fn">loadstring</span>(<span class="tok-fn">game</span>:<span class="tok-fn">HttpGet</span>(<span class="tok-str">"https://pollutedhub.cc/loader"</span>))()</p>
+          <p class="mock-status">✔ Injected &nbsp;·&nbsp; ✔ Game detected &nbsp;·&nbsp; ✔ UI loaded &nbsp;·&nbsp; ✔ No key required</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRUST STRIP -->
+  <section class="trust-strip">
+    <div class="trust-inner">
+      <span>⚡ Same-day patches</span>
+      <span>🔓 No key system</span>
+      <span>💸 Free forever</span>
+      <span>🛡️ Actively maintained</span>
+      <span>🎮 40+ games</span>
+      <span>💬 85K+ Discord</span>
+    </div>
+  </section>
+
+  <!-- PREVIEW -->
+  <section id="preview" class="section">
+    <div class="section-head">
+      <span class="eyebrow">Live Preview</span>
+      <h2>See exactly what you're getting</h2>
+      <p class="section-sub">This is the Polluted Hub interface. Click a game on the left to browse its features — every toggle below is a script we actually ship.</p>
+    </div>
+
+    <div class="preview-wrap">
+      <div class="preview-app glass">
+        <div class="app-titlebar">
+          <img src="assets/logo.svg" alt="" class="app-logo" />
+          <span class="app-name">Polluted Hub</span>
+          <span class="app-ver">v4.2.1</span>
+          <span class="app-spacer"></span>
+          <span class="app-ping"><span class="dot dot-green"></span> 12ms</span>
+          <span class="app-btns"><i></i><i></i><i class="x"></i></span>
+        </div>
+
+        <div class="app-body">
+          <aside class="app-sidebar" id="appTabs"></aside>
+          <div class="app-main">
+            <div class="app-main-head">
+              <div>
+                <h4 id="appGameName">Blox Fruits</h4>
+                <span id="appGameMeta" class="app-meta"></span>
+              </div>
+              <span class="app-badge"><span class="dot dot-green"></span> Connected</span>
+            </div>
+            <div class="app-modules" id="appModules"></div>
+          </div>
+        </div>
+      </div>
+
+      <ul class="preview-notes">
+        <li><strong>Everything in one panel.</strong> No separate scripts to hunt down per game — the loader detects what you're playing and opens the right module set.</li>
+        <li><strong>Settings that stick.</strong> Your toggles save per game and reload automatically on your next injection.</li>
+        <li><strong>Built to be readable.</strong> Grouped sections, real labels, no wall of unlabelled buttons.</li>
+      </ul>
+    </div>
+  </section>
+
+  <!-- GAMES -->
+  <section id="games" class="section">
+    <div class="section-head">
+      <span class="eyebrow">Game Support</span>
+      <h2>Works with the games you actually play</h2>
+      <p class="section-sub">Every script is tested against the live game and repatched as soon as an update breaks it.</p>
+    </div>
+
+    <div class="games-grid"></div>
+
+    <p class="games-foot">…and 28 more in the hub. <a href="#discord">Request a game in Discord →</a></p>
+  </section>
+
+  <!-- WHY US -->
+  <section id="why" class="section">
+    <div class="section-head">
+      <span class="eyebrow">Why Polluted Hub</span>
+      <h2>Built different from the rest of the hub scene</h2>
+      <p class="section-sub">Every hub claims to be the best. Here's what's actually different about this one.</p>
+    </div>
+
+    <div class="why-grid">
+      <div class="why-card glass featured">
+        <div class="why-icon">🔓</div>
+        <h3>No key system. Ever.</h3>
+        <p>The single biggest reason people switch. No key pages, no linkvertise loops, no 24-hour expiry. Paste the script and you're in — every single time.</p>
+      </div>
+      <div class="why-card glass">
+        <div class="why-icon">⚡</div>
+        <h3>Same-day updates</h3>
+        <p>When a supported game patches, scripts are usually fixed within hours — you'll see the update posted in Discord before you notice it broke.</p>
+      </div>
+      <div class="why-card glass">
+        <div class="why-icon">🎮</div>
+        <h3>40+ games, one script</h3>
+        <p>Stop juggling five different hubs. One loader auto-detects your game and opens the matching module set.</p>
+      </div>
+      <div class="why-card glass">
+        <div class="why-icon">🧩</div>
+        <h3>A UI that makes sense</h3>
+        <p>Grouped sections, clear labels, saved configs. Designed to be used mid-game without squinting at it.</p>
+      </div>
+      <div class="why-card glass">
+        <div class="why-icon">💸</div>
+        <h3>Genuinely free</h3>
+        <p>No premium tier holding the good scripts hostage. Everything in the preview above is what everyone gets.</p>
+      </div>
+      <div class="why-card glass">
+        <div class="why-icon">💬</div>
+        <h3>Support that replies</h3>
+        <p>An active Discord with staff online, script requests taken seriously, and a status channel that tells you what's working right now.</p>
+      </div>
+    </div>
+
+    <div class="compare-wrap">
+      <h3 class="compare-title">Polluted Hub vs. the average hub</h3>
+      <div class="compare-scroll">
+        <table class="compare glass">
+          <thead>
+            <tr>
+              <th>&nbsp;</th>
+              <th class="col-us">Polluted Hub</th>
+              <th>Typical script hub</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Key system</td>
+              <td class="col-us"><span class="yes">None — instant access</span></td>
+              <td><span class="no">Multi-step key, expires daily</span></td>
+            </tr>
+            <tr>
+              <td>Price</td>
+              <td class="col-us"><span class="yes">Free forever</span></td>
+              <td><span class="no">Free tier + paid premium</span></td>
+            </tr>
+            <tr>
+              <td>Games supported</td>
+              <td class="col-us"><span class="yes">40+ in one loader</span></td>
+              <td><span class="no">A handful, separate scripts</span></td>
+            </tr>
+            <tr>
+              <td>Update speed</td>
+              <td class="col-us"><span class="yes">Same day</span></td>
+              <td><span class="no">Days to weeks</span></td>
+            </tr>
+            <tr>
+              <td>Interface</td>
+              <td class="col-us"><span class="yes">Custom UI, saved configs</span></td>
+              <td><span class="no">Default library, no saving</span></td>
+            </tr>
+            <tr>
+              <td>Support</td>
+              <td class="col-us"><span class="yes">24/7 active Discord</span></td>
+              <td><span class="no">Dead server, no replies</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- DISCORD -->
+  <section id="discord" class="section">
+    <div class="discord-card glass">
+      <div class="discord-copy">
+        <span class="eyebrow">Community</span>
+        <h2>Join 85,000+ members on Discord</h2>
+        <p>The Discord is where updates land first. Get notified the second a script is patched, request support for a new game, and grab help from staff who are actually online.</p>
+        <ul class="discord-perks">
+          <li>🔔 Instant update &amp; downtime alerts</li>
+          <li>🗳️ Vote on which game gets scripted next</li>
+          <li>🛠️ Direct support from the dev team</li>
+          <li>🎁 Giveaways and community events</li>
+        </ul>
+        <a href="#" class="btn btn-discord btn-lg">
+          <svg class="ico-discord" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.3 5.3A16.5 16.5 0 0 0 15.2 4l-.3.6a12.6 12.6 0 0 1 3.6 1.9 15.9 15.9 0 0 0-13 0A12.6 12.6 0 0 1 9.1 4.6L8.8 4a16.5 16.5 0 0 0-4.1 1.3C2 9.4 1.3 13.4 1.6 17.3a16.7 16.7 0 0 0 5.1 2.6l1.1-1.6a10.8 10.8 0 0 1-1.7-.8l.4-.3a11.8 11.8 0 0 0 10.1 0l.4.3a10.8 10.8 0 0 1-1.7.8l1.1 1.6a16.7 16.7 0 0 0 5.1-2.6c.4-4.5-.7-8.5-2.2-12ZM8.5 14.9c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm7 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/></svg>
+          Join the Discord
+        </a>
+      </div>
+
+      <div class="discord-widget">
+        <div class="dw-head">
+          <img src="assets/logo.svg" alt="" class="dw-icon" />
+          <div>
+            <strong>Polluted Hub</strong>
+            <span class="dw-sub">Official Server</span>
+          </div>
+        </div>
+        <div class="dw-counts">
+          <span><span class="dot dot-green"></span> 6,412 Online</span>
+          <span><span class="dot dot-grey"></span> 85,730 Members</span>
+        </div>
+        <div class="dw-channels">
+          <span># announcements</span>
+          <span># script-updates</span>
+          <span># game-requests</span>
+          <span># support</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOWNLOAD -->
+  <section id="download" class="section">
+    <div class="cta-card glass">
+      <img src="assets/logo.svg" alt="" class="cta-logo" />
+      <h2>Paste it and play</h2>
+      <p>Copy the loader into any executor. No key, no signup, no catch.</p>
+
+      <div class="script-box">
+        <code id="scriptCode">loadstring(game:HttpGet("https://pollutedhub.cc/loader"))()</code>
+        <button class="btn btn-primary" id="copyScriptBtn">Copy</button>
+      </div>
+
+      <div class="hero-actions">
+        <a href="#discord" class="btn btn-discord btn-lg">
+          <svg class="ico-discord" viewBox="0 0 24 24" aria-hidden="true"><path d="M19.3 5.3A16.5 16.5 0 0 0 15.2 4l-.3.6a12.6 12.6 0 0 1 3.6 1.9 15.9 15.9 0 0 0-13 0A12.6 12.6 0 0 1 9.1 4.6L8.8 4a16.5 16.5 0 0 0-4.1 1.3C2 9.4 1.3 13.4 1.6 17.3a16.7 16.7 0 0 0 5.1 2.6l1.1-1.6a10.8 10.8 0 0 1-1.7-.8l.4-.3a11.8 11.8 0 0 0 10.1 0l.4.3a10.8 10.8 0 0 1-1.7.8l1.1 1.6a16.7 16.7 0 0 0 5.1-2.6c.4-4.5-.7-8.5-2.2-12ZM8.5 14.9c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Zm7 0c-1 0-1.8-.9-1.8-2s.8-2 1.8-2 1.8.9 1.8 2-.8 2-1.8 2Z"/></svg>
+          Join Discord
+        </a>
+        <a href="#preview" class="btn btn-outline btn-lg">See the UI</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="section">
+    <div class="section-head">
+      <span class="eyebrow">FAQ</span>
+      <h2>Good to know</h2>
+    </div>
+
+    <div class="faq-list">
+      <details class="faq-item glass" open>
+        <summary>Is there really no key system?</summary>
+        <p>Correct — Polluted Hub has no key system at all. There's no key page, no linkvertise step and nothing to renew. You paste the loader and the UI opens immediately.</p>
+      </details>
+      <details class="faq-item glass">
+        <summary>Is it free?</summary>
+        <p>Yes, completely. There's no premium tier and no locked modules — everything shown in the preview is available to everyone.</p>
+      </details>
+      <details class="faq-item glass">
+        <summary>Which executors does it work with?</summary>
+        <p>Any Lua executor that supports <code>loadstring</code> and <code>HttpGet</code>. The loader is tested against the most popular executors on each release.</p>
+      </details>
+      <details class="faq-item glass">
+        <summary>How often are scripts updated?</summary>
+        <p>Actively. Most supported games are repatched the same day an update breaks something, and every patch is announced in the Discord's <code>#script-updates</code> channel.</p>
+      </details>
+      <details class="faq-item glass">
+        <summary>My game isn't supported — can you add it?</summary>
+        <p>Request it in <code>#game-requests</code> on the Discord. Requests with the most votes get scripted first, and popular games usually land within a week or two.</p>
+      </details>
+      <details class="faq-item glass">
+        <summary>Is it safe to use?</summary>
+        <p>Using any third-party script is against Roblox's Terms of Service and carries a risk to your account. Polluted Hub's team works to keep scripts running smoothly, but no hub can promise zero risk — use it on an account you're willing to lose.</p>
+      </details>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <img src="assets/logo.svg" alt="" class="brand-logo" />
+      <span class="brand-name">Polluted<em>Hub</em></span>
+    </div>
+    <nav class="footer-links">
+      <a href="#games">Games</a>
+      <a href="#preview">Preview</a>
+      <a href="#why">Why Us</a>
+      <a href="#discord">Discord</a>
+      <a href="#faq">FAQ</a>
+    </nav>
+    <p class="footer-note">Polluted Hub is an independent script hub and is not affiliated with, endorsed by, or sponsored by Roblox Corporation. "Roblox" is a trademark of Roblox Corporation.</p>
+    <p class="footer-copy">© 2026 Polluted Hub</p>
+  </div>
+</footer>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script src="script.js"></script>
+</body>
 </html>

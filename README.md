@@ -1,73 +1,47 @@
-# React + TypeScript + Vite
+# Polluted Hub — Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Marketing site for the Polluted Hub Roblox script hub. Plain HTML, CSS and JavaScript
+with no build step or dependencies.
 
-Currently, two official plugins are available:
+## Files
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| File | Purpose |
+| --- | --- |
+| `index.html` | The whole page — hero, preview, games, why-us, Discord, FAQ |
+| `styles.css` | Glassmorphic blue theme, layout and responsive rules |
+| `script.js` | Game data, interactive hub preview, copy button, mobile nav |
+| `assets/logo.svg` | Logo used in the nav, hero, footer and favicon |
 
-## React Compiler
+## Running it
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Open `index.html` directly, or serve the folder:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+python3 -m http.server
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Then visit http://localhost:8000.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## Editing content
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+**Games and preview modules** live in the `GAMES` array at the top of `script.js`.
+Each entry drives a card in the games grid. Entries that also have a `sections`
+array show up as tabs in the interactive preview, so adding a game to the preview
+is just adding `sections` to it.
+
+**The Discord invite** is a placeholder `href="#"` on the buttons marked
+`btn-discord` in `index.html` — swap in the real invite URL.
+
+**The loader script** shown in the download section is the `<code id="scriptCode">`
+element in `index.html`.
+
+## Replacing the logo
+
+`assets/logo.svg` is a stand-in drawn to match the Polluted Hub artwork. To use the
+real image, drop it in as `assets/logo.png` and update the `src` on the `<img>` tags
+and the favicon `<link>` in `index.html`.
+
+## Deploying
+
+Vercel serves this as-is with no build command — `vercel.json` only enables clean
+URLs. Any static host (GitHub Pages, Netlify, Cloudflare Pages) works the same way.
