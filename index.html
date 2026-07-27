@@ -72,7 +72,7 @@ body::before{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opa
 @keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,0.4)}70%{box-shadow:0 0 0 6px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
 
 /* CODE */
-.code-block{background:linear-gradient(160deg,rgba(0,0,0,0.55),rgba(4,10,22,0.62));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(96,165,250,0.14);box-shadow:0 1px 0 rgba(255,255,255,0.05) inset;font-family:'JetBrains Mono',monospace}
+.code-block{background:linear-gradient(160deg,rgba(0,0,0,0.55),rgba(3,16,12,0.6));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(74,222,128,0.16);box-shadow:0 1px 0 rgba(255,255,255,0.05) inset,0 0 24px -14px rgba(74,222,128,0.5);font-family:'JetBrains Mono',monospace}
 
 /* PAGES */
 .page{transition:opacity 0.4s cubic-bezier(0.23,1,0.32,1),transform 0.4s cubic-bezier(0.23,1,0.32,1)}
@@ -421,7 +421,7 @@ html{scroll-behavior:smooth}
 
 <!-- ============ GAME PAGE ============ -->
 <div id="gamePage" class="page page-hidden">
-  <section class="relative pt-22 pb-12 px-5 md:px-8">
+  <section class="relative pt-24 pb-12 px-5 md:px-8">
     <div class="max-w-3xl mx-auto">
       <button onclick="goHome()" class="inline-flex items-center gap-1.5 text-slate-600 hover:text-white text-[13px] font-medium transition-colors duration-300 mb-8 group">
         <span class="iconify text-base transition-transform duration-300 group-hover:-translate-x-0.5" data-icon="mdi:arrow-left"></span>Back
@@ -470,7 +470,7 @@ html{scroll-behavior:smooth}
                   <span class="text-[10px] text-slate-700 font-mono">polluted-hub.lua</span>
                   <button id="gpCopySmall" class="text-[10px] text-accent font-mono hover:text-blue-300 transition-colors duration-300 flex items-center gap-1"><span class="iconify text-[10px]" data-icon="mdi:content-copy"></span>Copy</button>
                 </div>
-                <div class="p-3"><code id="gpScript" class="text-blue-300/60 text-[10px] font-mono break-all leading-5"></code></div>
+                <div class="p-3"><code id="gpScript" class="text-green-400/90 text-[10px] font-mono break-all leading-5"></code></div>
               </div>
             </div>
             <div class="px-3.5 pb-3.5">
