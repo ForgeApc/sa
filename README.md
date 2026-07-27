@@ -52,5 +52,25 @@ The footer social links (Discord, YouTube, Telegram) are all still `href="#"`.
 
 ## Deploying
 
-Vercel serves this as-is with no build command — `vercel.json` only enables clean URLs.
-Any static host (GitHub Pages, Netlify, Cloudflare Pages) works the same way.
+There is no build step — the site is served straight from the repo root. `vercel.json`
+pins that explicitly:
+
+```json
+{
+  "framework": null,        // no framework preset ("Other")
+  "buildCommand": null,     // nothing to build
+  "installCommand": null,   // no dependencies to install
+  "outputDirectory": ".",   // serve the repo root
+  "cleanUrls": true,
+  "trailingSlash": false
+}
+```
+
+`framework: null` matters: if the Vercel project's dashboard preset is set to anything
+else (for example `services`), the deploy fails with *"Project framework is set to
+'services', but no services are declared."* The `vercel.json` value overrides the
+dashboard setting. If a deploy still fails on framework detection, change it directly at
+**Project → Settings → Build & Deployment → Framework Preset → Other**.
+
+Any static host (GitHub Pages, Netlify, Cloudflare Pages) works the same way — point it
+at the repo root with no build command.
