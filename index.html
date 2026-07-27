@@ -1,13 +1,555 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>stock-predictor</title>
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Polluted Hub — Premium Roblox Scripts</title>
+<link rel="icon" href="assets/logo.png">
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://code.iconify.design/3/3.1.0/iconify.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+tailwind.config={theme:{extend:{fontFamily:{sans:['Inter','sans-serif'],mono:['JetBrains Mono','monospace']}}}}
+</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',sans-serif;background:#030508;color:#c8cdd5;overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opacity:0.018;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+
+::-webkit-scrollbar{width:4px}
+::-webkit-scrollbar-track{background:#030508}
+::-webkit-scrollbar-thumb{background:#1a1f2e;border-radius:10px}
+::-webkit-scrollbar-thumb:hover{background:#3b82f6}
+
+/* GLASS - dark, neutral, minimal blue */
+.glass-nav{background:rgba(3,5,8,0.92);backdrop-filter:blur(30px);-webkit-backdrop-filter:blur(30px);border-bottom:1px solid rgba(255,255,255,0.04)}
+.glass-card{background:rgba(255,255,255,0.02);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.05);transition:all 0.4s cubic-bezier(0.23,1,0.32,1)}
+.glass-card:hover{border-color:rgba(255,255,255,0.08);background:rgba(255,255,255,0.035);box-shadow:0 12px 40px -12px rgba(0,0,0,0.5)}
+.glass-surface{background:rgba(255,255,255,0.025);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,0.05)}
+.glass-deep{background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);box-shadow:0 20px 60px -20px rgba(0,0,0,0.6)}
+.glass-input{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);transition:all 0.4s cubic-bezier(0.23,1,0.32,1)}
+.glass-input:focus-within{border-color:rgba(59,130,246,0.3);box-shadow:0 0 0 3px rgba(59,130,246,0.05)}
+
+/* BUTTONS */
+.btn-primary{background:#3b82f6;transition:all 0.3s cubic-bezier(0.23,1,0.32,1)}
+.btn-primary:hover{background:#2563eb;box-shadow:0 4px 20px -4px rgba(59,130,246,0.35)}
+.btn-primary:active{transform:scale(0.98)}
+.btn-secondary{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:#94a3b8;transition:all 0.3s cubic-bezier(0.23,1,0.32,1)}
+.btn-secondary:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.1);color:#e2e8f0}
+
+/* TAGS */
+.tag{font-size:10px;padding:2px 7px;border-radius:5px;font-weight:600;letter-spacing:0.02em}
+.tag-accent{background:rgba(59,130,246,0.08);color:#60a5fa;border:1px solid rgba(59,130,246,0.1)}
+.tag-ok{background:rgba(34,197,94,0.06);color:#4ade80;border:1px solid rgba(34,197,94,0.08)}
+
+/* TEXT */
+.text-accent{color:#3b82f6}
+.text-accent-soft{color:#60a5fa}
+.text-muted{color:#4a5568}
+
+/* ANIMATIONS */
+.reveal{opacity:0;transform:translateY(28px);transition:all 0.8s cubic-bezier(0.23,1,0.32,1)}
+.reveal.active{opacity:1;transform:translateY(0)}
+.pulse-dot{animation:pulse 2.5s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,0.4)}70%{box-shadow:0 0 0 6px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+
+/* CODE */
+.code-block{background:rgba(0,0,0,0.5);border:1px solid rgba(255,255,255,0.04);font-family:'JetBrains Mono',monospace}
+
+/* PAGES */
+.page{transition:opacity 0.4s cubic-bezier(0.23,1,0.32,1),transform 0.4s cubic-bezier(0.23,1,0.32,1)}
+.page-hidden{opacity:0;transform:translateY(12px);pointer-events:none;position:absolute;width:100%}
+.page-visible{opacity:1;transform:translateY(0);pointer-events:all;position:relative}
+
+/* TOAST */
+.toast{transform:translateY(20px) scale(0.96);opacity:0;transition:all 0.35s cubic-bezier(0.23,1,0.32,1);pointer-events:none}
+.toast.show{transform:translateY(0) scale(1);opacity:1}
+
+/* FEATURE PILL */
+.feat-pill{display:inline-flex;align-items:center;gap:5px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.05);border-radius:7px;padding:5px 10px;font-size:11px;color:#94a3b8;font-weight:500}
+
+/* STEP */
+.step-n{width:26px;height:26px;border-radius:7px;background:#3b82f6;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:#fff;flex-shrink:0}
+
+/* RELATED */
+.rel-card{cursor:pointer}
+.rel-card:hover .rel-arr{transform:translateX(3px)}
+.rel-arr{transition:transform 0.3s ease}
+
+/* COMPARE */
+.hl-col{background:rgba(59,130,246,0.03)}
+.c-row:hover .c-cell{background:rgba(255,255,255,0.015)}
+
+.no-results{display:none}.no-results.show{display:flex}
+html{scroll-behavior:smooth}
+
+/* Divider */
+.divider{height:1px;background:rgba(255,255,255,0.04)}
+</style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav class="glass-nav fixed top-0 left-0 right-0 z-50">
+  <div class="max-w-5xl mx-auto px-5 md:px-8 h-14 flex items-center justify-between">
+    <a href="#" onclick="goHome();return false" class="flex items-center">
+      <img src="assets/logo.png" alt="Polluted Hub" class="h-8 w-auto rounded object-contain">
+    </a>
+    <div class="hidden md:flex items-center gap-8">
+      <a href="#" onclick="goHome();return false" class="text-[12px] text-slate-600 hover:text-white font-medium transition-colors duration-300">Scripts</a>
+      <a href="#" onclick="goAbout();return false" class="text-[12px] text-slate-600 hover:text-white font-medium transition-colors duration-300">About</a>
+      <a href="#" onclick="goHome();setTimeout(()=>document.getElementById('faq')?.scrollIntoView({behavior:'smooth'}),100);return false" class="text-[12px] text-slate-600 hover:text-white font-medium transition-colors duration-300">FAQ</a>
+    </div>
+    <div class="flex items-center gap-4">
+      <a href="https://discord.gg" target="_blank" class="hidden sm:flex items-center gap-1.5 text-[12px] text-slate-600 hover:text-white font-medium transition-colors duration-300">
+        <span class="iconify text-sm" data-icon="ic:baseline-discord"></span>Discord
+      </a>
+      <button id="menuToggle" class="md:hidden w-8 h-8 rounded-lg flex items-center justify-center text-slate-600 hover:text-white transition-colors duration-300">
+        <span class="iconify text-lg" data-icon="mdi:menu" id="menuIcon"></span>
+      </button>
+    </div>
+  </div>
+  <div id="mobileMenu" class="md:hidden overflow-hidden transition-all duration-400" style="max-height:0;opacity:0">
+    <div class="px-5 pb-4 flex flex-col gap-0.5">
+      <a href="#" onclick="goHome();closeMobile();return false" class="text-[13px] text-slate-500 py-2.5 px-3 rounded-lg hover:bg-white/[0.03] hover:text-white transition-all duration-300">Scripts</a>
+      <a href="#" onclick="goAbout();closeMobile();return false" class="text-[13px] text-slate-500 py-2.5 px-3 rounded-lg hover:bg-white/[0.03] hover:text-white transition-all duration-300">About</a>
+      <a href="#" onclick="goHome();closeMobile();setTimeout(()=>document.getElementById('faq')?.scrollIntoView({behavior:'smooth'}),100);return false" class="text-[13px] text-slate-500 py-2.5 px-3 rounded-lg hover:bg-white/[0.03] hover:text-white transition-all duration-300">FAQ</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ MAIN ============ -->
+<div id="mainPage" class="page page-visible">
+  <section class="relative pt-28 pb-10 px-5 md:px-8">
+    <div class="max-w-5xl mx-auto text-center">
+      <div class="reveal inline-flex items-center gap-2 glass-surface rounded-full px-3.5 py-1.5 mb-7">
+        <span class="w-1.5 h-1.5 rounded-full bg-green-400 pulse-dot"></span>
+        <span class="text-[11px] font-medium text-slate-500">All scripts working</span>
+      </div>
+      <h1 class="reveal text-4xl sm:text-5xl md:text-[56px] font-extrabold tracking-tight leading-[1.05] mb-4" style="transition-delay:60ms">
+        <span class="text-white">Premium </span><span class="text-accent-soft">Roblox Scripts</span>
+      </h1>
+      <p class="reveal text-slate-600 text-sm md:text-[15px] font-light max-w-md mx-auto leading-relaxed mb-10" style="transition-delay:120ms">
+        Search your game, get the script. No keys, no links.
+      </p>
+
+      <div class="reveal max-w-lg mx-auto mb-14" style="transition-delay:180ms">
+        <div class="glass-input flex items-center gap-3 rounded-xl px-4 py-3.5">
+          <span class="iconify text-slate-700 text-lg flex-shrink-0" data-icon="mdi:magnify"></span>
+          <input type="text" id="gameSearch" class="bg-transparent w-full text-white text-sm font-medium placeholder:text-slate-700 outline-none" placeholder="Search games..." autocomplete="off">
+          <button id="clearSearch" class="w-6 h-6 rounded-md bg-white/[0.04] flex items-center justify-center text-slate-600 hover:text-white transition-all duration-300 hidden flex-shrink-0">
+            <span class="iconify text-xs" data-icon="mdi:close"></span>
+          </button>
+        </div>
+        <p id="resultCount" class="text-[11px] text-slate-800 mt-2 font-medium text-center"></p>
+      </div>
+
+      <div class="reveal flex flex-wrap items-center justify-center gap-8 md:gap-12" style="transition-delay:240ms">
+        <div class="flex items-center gap-2"><span class="iconify text-slate-700 text-base" data-icon="mdi:shield-check-outline"></span><span class="text-[11px] text-slate-600 font-medium">Undetected</span></div>
+        <div class="flex items-center gap-2"><span class="iconify text-slate-700 text-base" data-icon="mdi:key-off-outline"></span><span class="text-[11px] text-slate-600 font-medium">No Keys</span></div>
+        <div class="flex items-center gap-2"><span class="iconify text-slate-700 text-base" data-icon="mdi:update"></span><span class="text-[11px] text-slate-600 font-medium">Fast Updates</span></div>
+        <div class="flex items-center gap-2"><span class="iconify text-slate-700 text-base" data-icon="mdi:cellphone-link"></span><span class="text-[11px] text-slate-600 font-medium">PC & Mobile</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="scripts" class="relative pb-20 px-5 md:px-8">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal flex items-center gap-3 mb-5">
+        <h2 class="text-white font-semibold text-[15px]">All Scripts</h2>
+        <span id="scriptCountBadge" class="tag tag-accent">20</span>
+      </div>
+      <div id="gameGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3"></div>
+      <div id="noResults" class="no-results flex-col items-center justify-center py-20 gap-3">
+        <span class="iconify text-4xl text-slate-800" data-icon="mdi:magnify"></span>
+        <p class="text-slate-700 text-sm font-medium">No scripts found</p>
+        <button onclick="clearSearchInput()" class="text-accent text-sm font-medium hover:underline">Clear</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider max-w-5xl mx-auto"></div>
+
+  <section id="features" class="relative py-16 px-5 md:px-8">
+    <div class="max-w-5xl mx-auto">
+      <div class="reveal text-center mb-12">
+        <h2 class="text-lg font-semibold text-white mb-2">Why Polluted Hub</h2>
+        <p class="text-slate-600 text-sm font-light">Simple. Fast. Reliable.</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3">
+        <div class="reveal glass-card rounded-xl p-5" style="transition-delay:50ms">
+          <span class="iconify text-accent text-xl mb-3 block" data-icon="mdi:shield-check-outline"></span>
+          <h3 class="text-white font-semibold text-[13px] mb-1">Undetected</h3>
+          <p class="text-slate-600 text-[11px] font-light leading-relaxed">Zero bans this month</p>
+        </div>
+        <div class="reveal glass-card rounded-xl p-5" style="transition-delay:100ms">
+          <span class="iconify text-accent text-xl mb-3 block" data-icon="mdi:key-off-outline"></span>
+          <h3 class="text-white font-semibold text-[13px] mb-1">No Keys</h3>
+          <p class="text-slate-600 text-[11px] font-light leading-relaxed">Paste and play</p>
+        </div>
+        <div class="reveal glass-card rounded-xl p-5" style="transition-delay:150ms">
+          <span class="iconify text-accent text-xl mb-3 block" data-icon="mdi:clock-fast"></span>
+          <h3 class="text-white font-semibold text-[13px] mb-1">15min Updates</h3>
+          <p class="text-slate-600 text-[11px] font-light leading-relaxed">After every patch</p>
+        </div>
+        <div class="reveal glass-card rounded-xl p-5" style="transition-delay:200ms">
+          <span class="iconify text-accent text-xl mb-3 block" data-icon="mdi:headset"></span>
+          <h3 class="text-white font-semibold text-[13px] mb-1">24/7 Support</h3>
+          <p class="text-slate-600 text-[11px] font-light leading-relaxed">Under 5 min reply</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider max-w-5xl mx-auto"></div>
+
+  <section id="faq" class="relative py-16 px-5 md:px-8">
+    <div class="max-w-xl mx-auto">
+      <div class="reveal text-center mb-10"><h2 class="text-lg font-semibold text-white">FAQ</h2></div>
+      <div class="space-y-2">
+        <div class="reveal faq-item glass-card rounded-xl overflow-hidden" style="transition-delay:50ms"><button class="faq-toggle w-full flex items-center justify-between p-4 text-left"><span class="text-white font-medium text-[13px] pr-4">Is it safe?</span><span class="iconify text-slate-600 text-base flex-shrink-0 faq-icon transition-transform duration-300" data-icon="mdi:plus"></span></button><div class="faq-content max-h-0 overflow-hidden transition-all duration-400"><p class="px-4 pb-4 text-slate-500 text-[13px] font-light leading-relaxed">Yes. Obfuscated and tested. Zero bans this month. Use alts to be safe.</p></div></div>
+        <div class="reveal faq-item glass-card rounded-xl overflow-hidden" style="transition-delay:100ms"><button class="faq-toggle w-full flex items-center justify-between p-4 text-left"><span class="text-white font-medium text-[13px] pr-4">Which executors?</span><span class="iconify text-slate-600 text-base flex-shrink-0 faq-icon transition-transform duration-300" data-icon="mdi:plus"></span></button><div class="faq-content max-h-0 overflow-hidden transition-all duration-400"><p class="px-4 pb-4 text-slate-500 text-[13px] font-light leading-relaxed">Synapse X, Fluxus, Hydrogen, Arceus X, Delta, Script-Ware, and most Level 7+ executors.</p></div></div>
+        <div class="reveal faq-item glass-card rounded-xl overflow-hidden" style="transition-delay:150ms"><button class="faq-toggle w-full flex items-center justify-between p-4 text-left"><span class="text-white font-medium text-[13px] pr-4">Do I need a key?</span><span class="iconify text-slate-600 text-base flex-shrink-0 faq-icon transition-transform duration-300" data-icon="mdi:plus"></span></button><div class="faq-content max-h-0 overflow-hidden transition-all duration-400"><p class="px-4 pb-4 text-slate-500 text-[13px] font-light leading-relaxed">No. Just paste the loadstring and execute.</p></div></div>
+        <div class="reveal faq-item glass-card rounded-xl overflow-hidden" style="transition-delay:200ms"><button class="faq-toggle w-full flex items-center justify-between p-4 text-left"><span class="text-white font-medium text-[13px] pr-4">Mobile support?</span><span class="iconify text-slate-600 text-base flex-shrink-0 faq-icon transition-transform duration-300" data-icon="mdi:plus"></span></button><div class="faq-content max-h-0 overflow-hidden transition-all duration-400"><p class="px-4 pb-4 text-slate-500 text-[13px] font-light leading-relaxed">Yes. Arceus X, Delta, and other mobile executors.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="py-8 px-5 md:px-8">
+    <div class="max-w-5xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2">
+        <img src="assets/logo.png" alt="Polluted Hub" class="h-6 w-auto rounded object-contain">
+        <span class="text-slate-800 text-[11px]">© 2025</span>
+      </div>
+      <div class="flex items-center gap-2">
+        <a href="#" class="w-7 h-7 rounded-md glass-card flex items-center justify-center text-slate-700 hover:text-white transition-colors duration-300"><span class="iconify text-sm" data-icon="ic:baseline-discord"></span></a>
+        <a href="#" class="w-7 h-7 rounded-md glass-card flex items-center justify-center text-slate-700 hover:text-white transition-colors duration-300"><span class="iconify text-sm" data-icon="mdi:youtube"></span></a>
+        <a href="#" class="w-7 h-7 rounded-md glass-card flex items-center justify-center text-slate-700 hover:text-white transition-colors duration-300"><span class="iconify text-sm" data-icon="mdi:telegram"></span></a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<div id="aboutPage" class="page page-hidden">
+  <section class="relative pt-24 pb-12 px-5 md:px-8">
+    <div class="max-w-3xl mx-auto">
+      <button onclick="goHome()" class="reveal inline-flex items-center gap-1.5 text-slate-600 hover:text-white text-[13px] font-medium transition-colors duration-300 mb-10 group">
+        <span class="iconify text-base transition-transform duration-300 group-hover:-translate-x-0.5" data-icon="mdi:arrow-left"></span>Back
+      </button>
+
+      <div class="reveal text-center mb-14" style="transition-delay:60ms">
+        <img src="assets/logo.png" alt="Polluted Hub" class="h-16 mx-auto rounded-xl object-contain mb-5">
+        <h1 class="text-2xl md:text-4xl font-extrabold tracking-tight text-white mb-3">
+          Why <span class="text-accent-soft">Polluted Hub</span> is Better
+        </h1>
+        <p class="text-slate-600 text-sm font-light max-w-lg mx-auto leading-relaxed">
+          We built this because every other hub is the same broken experience.
+        </p>
+      </div>
+
+      <!-- Stats -->
+      <div class="reveal grid grid-cols-4 gap-3 mb-14" style="transition-delay:120ms">
+        <div class="glass-card rounded-xl p-4 text-center">
+          <div class="text-xl font-extrabold text-white mb-0.5">0</div>
+          <div class="text-[9px] text-slate-600 font-semibold uppercase tracking-widest">Key Systems</div>
+        </div>
+        <div class="glass-card rounded-xl p-4 text-center">
+          <div class="text-xl font-extrabold text-white mb-0.5">15m</div>
+          <div class="text-[9px] text-slate-600 font-semibold uppercase tracking-widest">Update Time</div>
+        </div>
+        <div class="glass-card rounded-xl p-4 text-center">
+          <div class="text-xl font-extrabold text-white mb-0.5">150K</div>
+          <div class="text-[9px] text-slate-600 font-semibold uppercase tracking-widest">Users</div>
+        </div>
+        <div class="glass-card rounded-xl p-4 text-center">
+          <div class="text-xl font-extrabold text-white mb-0.5">0</div>
+          <div class="text-[9px] text-slate-600 font-semibold uppercase tracking-widest">Bans</div>
+        </div>
+      </div>
+
+      <!-- Comparison -->
+      <div class="reveal mb-14" style="transition-delay:160ms">
+        <h2 class="text-base font-semibold text-white mb-6 text-center">Comparison</h2>
+        <div class="glass-deep rounded-xl overflow-hidden">
+          <table class="w-full text-[13px]">
+            <thead>
+              <tr class="border-b border-white/[0.04]">
+                <th class="text-left p-3.5 text-slate-600 font-semibold text-[11px] uppercase tracking-wider">Feature</th>
+                <th class="p-3.5 text-center text-[11px] uppercase tracking-wider font-bold hl-col"><span class="text-accent-soft">Polluted Hub</span></th>
+                <th class="p-3.5 text-center text-slate-600 font-semibold text-[11px] uppercase tracking-wider">Others</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="c-row border-b border-white/[0.03]"><td class="c-cell p-3.5 text-slate-500">Key System</td><td class="c-cell p-3.5 text-center hl-col text-green-400 font-medium">None</td><td class="c-cell p-3.5 text-center text-red-400/80">Linkvertise / Keys</td></tr>
+              <tr class="c-row border-b border-white/[0.03]"><td class="c-cell p-3.5 text-slate-500">Updates</td><td class="c-cell p-3.5 text-center hl-col text-green-400 font-medium">~15 minutes</td><td class="c-cell p-3.5 text-center text-red-400/80">Hours to days</td></tr>
+              <tr class="c-row border-b border-white/[0.03]"><td class="c-cell p-3.5 text-slate-500">Scripts</td><td class="c-cell p-3.5 text-center hl-col text-green-400 font-medium">250+</td><td class="c-cell p-3.5 text-center text-red-400/80">20-80</td></tr>
+              <tr class="c-row border-b border-white/[0.03]"><td class="c-cell p-3.5 text-slate-500">GUI</td><td class="c-cell p-3.5 text-center hl-col text-green-400 font-medium">Modern</td><td class="c-cell p-3.5 text-center text-red-400/80">Outdated</td></tr>
+              <tr class="c-row border-b border-white/[0.03]"><td class="c-cell p-3.5 text-slate-500">Mobile</td><td class="c-cell p-3.5 text-center hl-col text-green-400 font-medium">Full</td><td class="c-cell p-3.5 text-center text-red-400/80">Partial / None</td></tr>
+              <tr class="c-row border-b border-white/[0.03]"><td class="c-cell p-3.5 text-slate-500">Detections</td><td class="c-cell p-3.5 text-center hl-col text-green-400 font-medium">0 this month</td><td class="c-cell p-3.5 text-center text-red-400/80">Weekly reports</td></tr>
+              <tr class="c-row"><td class="c-cell p-3.5 text-slate-500">Support</td><td class="c-cell p-3.5 text-center hl-col text-green-400 font-medium">&lt;5 min</td><td class="c-cell p-3.5 text-center text-red-400/80">Hours / Never</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Why different -->
+      <div class="reveal mb-14" style="transition-delay:100ms">
+        <h2 class="text-base font-semibold text-white mb-6 text-center">What Makes Us Different</h2>
+        <div class="space-y-3">
+          <div class="glass-card rounded-xl p-5">
+            <div class="flex items-start gap-3.5">
+              <div class="w-9 h-9 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center flex-shrink-0 mt-0.5"><span class="iconify text-accent text-base" data-icon="mdi:key-off-outline"></span></div>
+              <div><h3 class="text-white font-semibold text-[13px] mb-1">Zero Friction</h3><p class="text-slate-600 text-[12px] font-light leading-relaxed">No linkvertise, no keys, no Discord verification. One paste, done. Other hubs make you jump through 3-4 links before you even see a script.</p></div>
+            </div>
+          </div>
+          <div class="glass-card rounded-xl p-5">
+            <div class="flex items-start gap-3.5">
+              <div class="w-9 h-9 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center flex-shrink-0 mt-0.5"><span class="iconify text-accent text-base" data-icon="mdi:clock-fast"></span></div>
+              <div><h3 class="text-white font-semibold text-[13px] mb-1">15 Minute Updates</h3><p class="text-slate-600 text-[12px] font-light leading-relaxed">Automated detection catches game updates and triggers our pipeline. Most hubs go dark for hours or days after a Roblox patch.</p></div>
+            </div>
+          </div>
+          <div class="glass-card rounded-xl p-5">
+            <div class="flex items-start gap-3.5">
+              <div class="w-9 h-9 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center flex-shrink-0 mt-0.5"><span class="iconify text-accent text-base" data-icon="mdi:palette-outline"></span></div>
+              <div><h3 class="text-white font-semibold text-[13px] mb-1">Modern GUI</h3><p class="text-slate-600 text-[12px] font-light leading-relaxed">Clean, draggable, themed, with keybinds and cloud configs. Most script GUIs look like they're from 2019 — ours doesn't.</p></div>
+            </div>
+          </div>
+          <div class="glass-card rounded-xl p-5">
+            <div class="flex items-start gap-3.5">
+              <div class="w-9 h-9 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center flex-shrink-0 mt-0.5"><span class="iconify text-accent text-base" data-icon="mdi:shield-lock-outline"></span></div>
+              <div><h3 class="text-white font-semibold text-[13px] mb-1">Actually Undetected</h3><p class="text-slate-600 text-[12px] font-light leading-relaxed">Custom obfuscation, VM execution, anti-detection. Not just a label — check our Discord. Zero ban reports this month.</p></div>
+            </div>
+          </div>
+          <div class="glass-card rounded-xl p-5">
+            <div class="flex items-start gap-3.5">
+              <div class="w-9 h-9 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center flex-shrink-0 mt-0.5"><span class="iconify text-accent text-base" data-icon="mdi:cellphone"></span></div>
+              <div><h3 class="text-white font-semibold text-[13px] mb-1">Real Mobile Support</h3><p class="text-slate-600 text-[12px] font-light leading-relaxed">Every script tested on Arceus X and Delta. If it doesn't work on mobile, we don't ship it. Other hubs just slap a "mobile" badge and hope.</p></div>
+            </div>
+          </div>
+          <div class="glass-card rounded-xl p-5">
+            <div class="flex items-start gap-3.5">
+              <div class="w-9 h-9 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center flex-shrink-0 mt-0.5"><span class="iconify text-accent text-base" data-icon="mdi:code-braces"></span></div>
+              <div><h3 class="text-white font-semibold text-[13px] mb-1">Clean Code</h3><p class="text-slate-600 text-[12px] font-light leading-relaxed">Modular, optimized, lazy-loaded. Other hubs are spaghetti that tanks your FPS. Ours runs lighter than most exploits.</p></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Problem -->
+      <div class="reveal glass-deep rounded-2xl p-8 mb-14" style="transition-delay:80ms">
+        <div class="text-center">
+          <h2 class="text-base font-semibold text-white mb-3">The Problem</h2>
+          <p class="text-slate-500 text-[13px] font-light leading-relaxed mb-6 max-w-lg mx-auto">
+            Linkvertise loops. Expired keys. Crashed games. No support. Ugly GUIs. Weekly ban reports. That's every other hub. We built Polluted Hub because you deserve better.
+          </p>
+          <div class="flex flex-wrap items-center justify-center gap-2">
+            <span class="text-red-400/60 text-[11px] font-medium flex items-center gap-1"><span class="iconify text-[10px]" data-icon="mdi:close-circle"></span>Linkvertise</span>
+            <span class="text-red-400/60 text-[11px] font-medium flex items-center gap-1"><span class="iconify text-[10px]" data-icon="mdi:close-circle"></span>Key systems</span>
+            <span class="text-red-400/60 text-[11px] font-medium flex items-center gap-1"><span class="iconify text-[10px]" data-icon="mdi:close-circle"></span>Broken scripts</span>
+            <span class="text-red-400/60 text-[11px] font-medium flex items-center gap-1"><span class="iconify text-[10px]" data-icon="mdi:close-circle"></span>Ugly GUIs</span>
+            <span class="text-red-400/60 text-[11px] font-medium flex items-center gap-1"><span class="iconify text-[10px]" data-icon="mdi:close-circle"></span>No support</span>
+            <span class="text-red-400/60 text-[11px] font-medium flex items-center gap-1"><span class="iconify text-[10px]" data-icon="mdi:close-circle"></span>Bans</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="reveal text-center" style="transition-delay:80ms">
+        <h2 class="text-xl font-bold text-white mb-3">Stop Wasting Time</h2>
+        <p class="text-slate-600 text-sm font-light max-w-sm mx-auto mb-8">150K+ users already switched.</p>
+        <div class="flex flex-col sm:flex-row items-center justify-center gap-3">
+          <a href="#" onclick="goHome();return false" class="btn-primary px-7 py-3 rounded-xl text-[13px] font-semibold text-white">Browse Scripts</a>
+          <a href="https://discord.gg" target="_blank" class="btn-secondary px-7 py-3 rounded-xl text-[13px] font-medium flex items-center gap-2"><span class="iconify text-sm" data-icon="ic:baseline-discord"></span>Discord</a>
+        </div>
+      </div>
+    </div>
+  </section>
+  <footer class="py-8 px-5 md:px-8 mt-12">
+    <div class="max-w-3xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2"><img src="assets/logo.png" alt="Polluted Hub" class="h-6 w-auto rounded object-contain"><span class="text-slate-800 text-[11px]">© 2025</span></div>
+      <div class="flex items-center gap-2">
+        <a href="#" class="w-7 h-7 rounded-md glass-card flex items-center justify-center text-slate-700 hover:text-white transition-colors duration-300"><span class="iconify text-sm" data-icon="ic:baseline-discord"></span></a>
+        <a href="#" class="w-7 h-7 rounded-md glass-card flex items-center justify-center text-slate-700 hover:text-white transition-colors duration-300"><span class="iconify text-sm" data-icon="mdi:youtube"></span></a>
+        <a href="#" class="w-7 h-7 rounded-md glass-card flex items-center justify-center text-slate-700 hover:text-white transition-colors duration-300"><span class="iconify text-sm" data-icon="mdi:telegram"></span></a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- ============ GAME PAGE ============ -->
+<div id="gamePage" class="page page-hidden">
+  <section class="relative pt-22 pb-12 px-5 md:px-8">
+    <div class="max-w-3xl mx-auto">
+      <button onclick="goHome()" class="inline-flex items-center gap-1.5 text-slate-600 hover:text-white text-[13px] font-medium transition-colors duration-300 mb-8 group">
+        <span class="iconify text-base transition-transform duration-300 group-hover:-translate-x-0.5" data-icon="mdi:arrow-left"></span>Back
+      </button>
+      <div class="flex items-start gap-4 mb-8">
+        <div id="gpIcon" class="w-14 h-14 rounded-xl glass-surface border border-white/[0.05] flex items-center justify-center flex-shrink-0">
+          <span class="iconify text-accent text-2xl" data-icon="mdi:gamepad-variant"></span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2 mb-1 flex-wrap">
+            <h1 id="gpTitle" class="text-white font-bold text-xl md:text-2xl"></h1>
+            <span class="tag tag-ok">Working</span>
+          </div>
+          <div id="gpTags" class="flex items-center gap-1.5 flex-wrap"></div>
+        </div>
+      </div>
+      <div class="grid grid-cols-1 lg:grid-cols-5 gap-5 mb-12">
+        <div class="lg:col-span-3 space-y-4">
+          <div class="glass-card rounded-xl p-5">
+            <h3 class="text-white font-semibold text-[13px] mb-2">Description</h3>
+            <p id="gpDesc" class="text-slate-500 text-[13px] font-light leading-relaxed"></p>
+          </div>
+          <div class="glass-card rounded-xl p-5">
+            <h3 class="text-white font-semibold text-[13px] mb-3">Features</h3>
+            <div id="gpFeatures" class="flex flex-wrap gap-1.5"></div>
+          </div>
+          <div class="glass-card rounded-xl p-5">
+            <h3 class="text-white font-semibold text-[13px] mb-3">How to Use</h3>
+            <div class="space-y-3">
+              <div class="flex items-start gap-2.5"><div class="step-n">1</div><p class="text-slate-500 text-[13px] font-light pt-0.5">Click <span class="text-accent font-medium">Copy Script</span> below</p></div>
+              <div class="flex items-start gap-2.5"><div class="step-n">2</div><p class="text-slate-500 text-[13px] font-light pt-0.5">Open your executor</p></div>
+              <div class="flex items-start gap-2.5"><div class="step-n">3</div><p class="text-slate-500 text-[13px] font-light pt-0.5">Paste and <span class="text-accent font-medium">Execute</span></p></div>
+              <div class="flex items-start gap-2.5"><div class="step-n">4</div><p class="text-slate-500 text-[13px] font-light pt-0.5">GUI appears — configure and go</p></div>
+            </div>
+          </div>
+        </div>
+        <div class="lg:col-span-2 space-y-4">
+          <div class="glass-card rounded-xl overflow-hidden">
+            <div class="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.04]">
+              <span class="text-[10px] text-slate-600 font-semibold uppercase tracking-wider">Script</span>
+              <span class="tag tag-ok">Ready</span>
+            </div>
+            <div class="p-3.5">
+              <div class="code-block rounded-lg overflow-hidden">
+                <div class="flex items-center justify-between px-3 py-2 border-b border-white/[0.03]">
+                  <span class="text-[10px] text-slate-700 font-mono">polluted-hub.lua</span>
+                  <button id="gpCopySmall" class="text-[10px] text-accent font-mono hover:text-blue-300 transition-colors duration-300 flex items-center gap-1"><span class="iconify text-[10px]" data-icon="mdi:content-copy"></span>Copy</button>
+                </div>
+                <div class="p-3"><code id="gpScript" class="text-blue-300/60 text-[10px] font-mono break-all leading-5"></code></div>
+              </div>
+            </div>
+            <div class="px-3.5 pb-3.5">
+              <button id="gpCopyBig" class="btn-primary w-full py-3 rounded-lg text-[13px] font-semibold text-white flex items-center justify-center gap-2">
+                <span class="iconify text-base" data-icon="mdi:content-copy"></span>Copy Script
+              </button>
+            </div>
+          </div>
+          <div class="glass-card rounded-xl p-4 space-y-2.5">
+            <div class="flex items-center justify-between"><span class="text-slate-600 text-[11px]">Status</span><span class="flex items-center gap-1.5 text-[11px] text-green-400 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-green-400 pulse-dot"></span>Working</span></div>
+            <div class="divider"></div>
+            <div class="flex items-center justify-between"><span class="text-slate-600 text-[11px]">Updated</span><span class="text-slate-400 text-[11px]">Today</span></div>
+            <div class="divider"></div>
+            <div class="flex items-center justify-between"><span class="text-slate-600 text-[11px]">Version</span><span class="text-slate-400 text-[11px]">v3.2.1</span></div>
+            <div class="divider"></div>
+            <div class="flex items-center justify-between"><span class="text-slate-600 text-[11px]">Key</span><span class="text-slate-400 text-[11px]">Not needed</span></div>
+            <div class="divider"></div>
+            <div class="flex items-center justify-between"><span class="text-slate-600 text-[11px]">Mobile</span><span class="text-slate-400 text-[11px]">Supported</span></div>
+          </div>
+          <a href="https://discord.gg" target="_blank" class="glass-card rounded-xl p-4 flex items-center gap-3 group cursor-pointer block">
+            <div class="w-9 h-9 rounded-lg bg-[#5865F2]/8 border border-[#5865F2]/10 flex items-center justify-center flex-shrink-0"><span class="iconify text-[#5865F2] text-lg" data-icon="ic:baseline-discord"></span></div>
+            <div class="flex-1"><div class="text-white text-[13px] font-medium">Need help?</div><div class="text-slate-600 text-[11px]">Join Discord</div></div>
+            <span class="iconify text-slate-700 text-base group-hover:text-white transition-colors duration-300" data-icon="mdi:chevron-right"></span>
+          </a>
+        </div>
+      </div>
+      <div class="mb-12">
+        <h3 class="text-white font-semibold text-[13px] mb-4">Related</h3>
+        <div id="gpRelated" class="grid grid-cols-1 sm:grid-cols-3 gap-3"></div>
+      </div>
+    </div>
+  </section>
+  <footer class="py-8 px-5 md:px-8">
+    <div class="max-w-3xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+      <div class="flex items-center gap-2"><img src="assets/logo.png" alt="Polluted Hub" class="h-6 w-auto rounded object-contain"><span class="text-slate-800 text-[11px]">© 2025</span></div>
+      <div class="flex items-center gap-2">
+        <a href="#" class="w-7 h-7 rounded-md glass-card flex items-center justify-center text-slate-700 hover:text-white transition-colors duration-300"><span class="iconify text-sm" data-icon="ic:baseline-discord"></span></a>
+        <a href="#" class="w-7 h-7 rounded-md glass-card flex items-center justify-center text-slate-700 hover:text-white transition-colors duration-300"><span class="iconify text-sm" data-icon="mdi:youtube"></span></a>
+        <a href="#" class="w-7 h-7 rounded-md glass-card flex items-center justify-center text-slate-700 hover:text-white transition-colors duration-300"><span class="iconify text-sm" data-icon="mdi:telegram"></span></a>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<!-- Toast -->
+<div id="copyToast" class="toast fixed bottom-5 left-1/2 -translate-x-1/2 z-[200] glass-deep rounded-xl px-4 py-2.5 flex items-center gap-2">
+  <span class="iconify text-green-400 text-base" data-icon="mdi:check-circle"></span>
+  <span class="text-[13px] font-medium text-white">Copied!</span>
+</div>
+
+<script>
+const games=[
+{name:"Blox Fruits",icon:"mdi:sword-cross",tags:["Combat","Farming"],desc:"Auto farm, auto quest, fruit sniper, raid helper, teleport, sea events, and 50+ more features for Blox Fruits.",features:["Auto Farm","Fruit Sniper","Auto Quest","Raid Helper","Teleport","Sea Events","Stat Farm","Boss Farm","Auto Race","Skill Farm"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/blox-fruits'))()"},
+{name:"Da Hood",icon:"mdi:knife-military",tags:["Combat","PvP"],desc:"Silent aim, kill aura, stomp aura, anti-stun, and full PvP overhaul for Da Hood.",features:["Silent Aim","Kill Aura","Stomp Aura","Anti Stun","Auto Stomp","Gun Mods","Speed","FOV Changer"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/da-hood'))()"},
+{name:"Pet Simulator 99",icon:"mdi:paw",tags:["Farming","Utility"],desc:"Auto farm coins & diamonds, auto hatch eggs, auto enchant, duplicate pets, and speed boosts.",features:["Auto Hatch","Auto Farm","Auto Enchant","Dupe Pets","Speed Boost","Coin Farm","Diamond Farm","Rank Up"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/pet-sim-99'))()"},
+{name:"Arsenal",icon:"mdi:crosshairs-gps",tags:["Combat","FPS"],desc:"ESP, aimbot with FOV, prediction, no recoil, infinite ammo, and wall-check.",features:["Aimbot","ESP","No Recoil","Infinite Ammo","Prediction","Wall Check","FOV Circle","Gun Mods"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/arsenal'))()"},
+{name:"King Legacy",icon:"mdi:crown",tags:["Farming","Adventure"],desc:"Auto quest, devil fruit notifier, ship speed, instant teleport, boss auto-farm.",features:["Auto Quest","DF Notifier","Teleport","Boss Farm","Ship Speed","Auto Farm","Skill Farm","Raids"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/king-legacy'))()"},
+{name:"Brookhaven RP",icon:"mdi:home-city",tags:["Utility","Fun"],desc:"Speed mod, fly, noclip, vehicle spawner, admin commands, money glitch.",features:["Fly","Noclip","Speed","Admin Cmds","Vehicle Spawn","Money Glitch","Custom Emotes","Teleport"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/brookhaven'))()"},
+{name:"Murder Mystery 2",icon:"mdi:skull",tags:["Utility","Fun"],desc:"Role reveal, ESP, coin farm, speed, and instant role detection.",features:["Role Reveal","ESP","Coin Farm","Speed","Gun Aura","Murderer Alert","Sheriff Alert","Teleport"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/mm2'))()"},
+{name:"Bee Swarm Simulator",icon:"mdi:flower-tulip",tags:["Farming","Sim"],desc:"Auto farm pollen, auto quest, token collector, hive mind, field switcher.",features:["Auto Farm","Auto Quest","Token Collect","Field Switch","Hive Mind","Boost Farm","Mob Farm","Mythic Hunt"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/bee-swarm'))()"},
+{name:"Flee the Facility",icon:"mdi:run-fast",tags:["Utility","Horror"],desc:"Exit finder, speed boost, hack door progress, freeze hacker, full ESP.",features:["Exit Finder","Speed Boost","Door Hack","Freeze Hacker","ESP","No Stun","Distance Alert","Auto Hide"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/flee-the-facility'))()"},
+{name:"Tower of Hell",icon:"mdi:tower-fire",tags:["Utility","Obby"],desc:"Instant win, teleport to top, noclip, fly, infinite jump.",features:["Instant Win","TP to Top","Noclip","Fly","Infinite Jump","Speed","Anti Fall","Checkpoint TP"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/tower-of-hell'))()"},
+{name:"Driving Empire",icon:"mdi:car-sports",tags:["Fun","Racing"],desc:"Unlimited money, max speed, nitro boost, car spawner, teleport.",features:["Unlimited Money","Max Speed","Nitro Boost","Car Spawn","Teleport","No Damage","Drift Mod","Race Win"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/driving-empire'))()"},
+{name:"Anime Adventures",icon:"mdi:sword",tags:["Farming","Anime"],desc:"Auto farm story, infinite gems, auto summon, unit upgrade, auto raid.",features:["Auto Story","Infinite Gems","Auto Summon","Unit Upgrade","Auto Raid","AFK Farm","Speed Farm","World Farm"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/anime-adventures'))()"},
+{name:"Jailbreak",icon:"mdi:police-badge",tags:["Utility","Action"],desc:"Auto rob, vehicle mods, teleport, prison escape, infinite money.",features:["Auto Rob","Vehicle Mods","Teleport","Prison Escape","Inf Money","Speed","Jetpack","No Arrest"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/jailbreak'))()"},
+{name:"Slap Battles",icon:"mdi:hand-back-right",tags:["Fun","Combat"],desc:"Auto slap, reach extender, anti-knockback, glove unlocker, slap aura.",features:["Auto Slap","Reach Extend","Anti KB","Glove Unlock","Slap Aura","Speed","TP to Players","Kill Aura"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/slap-battles'))()"},
+{name:"Anime Fighters",icon:"mdi:boxing-glove",tags:["Farming","Anime"],desc:"Auto farm, auto raid, infinite yen, auto summon, teleport.",features:["Auto Farm","Auto Raid","Infinite Yen","Auto Summon","Teleport","Speed Farm","Boss Farm","Shard Farm"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/anime-fighters'))()"},
+{name:"Rogue Lineage",icon:"mdi:axe",tags:["Combat","RPG"],desc:"Auto skill, silent aim, ESP classes, instant cast, combat overlay.",features:["Auto Skill","Silent Aim","Class ESP","Instant Cast","Combat Overlay","No Cooldown","Auto Parry","HP Alert"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/rogue-lineage'))()"},
+{name:"Build A Boat",icon:"mdi:sail-boat",tags:["Utility","Fun"],desc:"Infinite blocks, speed boost, fly, teleport to end, auto-build.",features:["Infinite Blocks","Speed Boost","Fly","TP to End","Auto Build","No Destroy","Jetpack","Stabilize"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/build-a-boat'))()"},
+{name:"Natural Disaster",icon:"mdi:weather-lightning",tags:["Utility","Survival"],desc:"Disaster alert, ESP, god mode, speed, auto-survive.",features:["Disaster Alert","ESP","God Mode","Speed","Auto Survive","Safe Spot TP","No Ragdoll","Item ESP"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/natural-disaster'))()"},
+{name:"Greenville",icon:"mdi:gas-station",tags:["Fun","RP"],desc:"Money glitch, speed mods, car fly, teleport, admin commands.",features:["Money Glitch","Speed Mod","Car Fly","Teleport","Admin Cmds","No Limit","Fuel Hack","Weather Control"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/greenville'))()"},
+{name:"Pizza Factory Tycoon",icon:"mdi:pizza",tags:["Farming","Tycoon"],desc:"Auto collect, instant build, money multiplier, speed, auto-deliver.",features:["Auto Collect","Instant Build","Money Multi","Speed","Auto Deliver","Auto Upgrade","Unlock All","No Cooldown"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/pizza-factory'))()"}
+];
+
+const P={main:document.getElementById('mainPage'),about:document.getElementById('aboutPage'),game:document.getElementById('gamePage')};
+let cur='main';
+function sw(to){Object.values(P).forEach(p=>{p.classList.remove('page-visible');p.classList.add('page-hidden')});setTimeout(()=>{P[to].classList.remove('page-hidden');P[to].classList.add('page-visible');window.scrollTo({top:0,behavior:'instant'})},60);cur=to;if(to==='main')setTimeout(()=>document.querySelectorAll('#mainPage .reveal:not(.active)').forEach(e=>rO.observe(e)),250);if(to==='about')setTimeout(()=>document.querySelectorAll('#aboutPage .reveal:not(.active)').forEach(e=>rO.observe(e)),250)}
+function goHome(){sw('main');history.pushState(null,'','#')}
+function goAbout(){sw('about');history.pushState(null,'','#about')}
+
+function goToGame(idx){
+  const g=games[idx];if(!g)return;
+  document.getElementById('gpTitle').textContent=g.name;
+  document.getElementById('gpIcon').innerHTML=`<span class="iconify text-accent text-2xl" data-icon="${g.icon}"></span>`;
+  document.getElementById('gpTags').innerHTML=g.tags.map(t=>`<span class="tag tag-accent">${t}</span>`).join('');
+  document.getElementById('gpDesc').textContent=g.desc;
+  document.getElementById('gpFeatures').innerHTML=g.features.map(f=>`<span class="feat-pill"><span class="iconify text-accent/40 text-[10px]" data-icon="mdi:check-circle"></span>${f}</span>`).join('');
+  document.getElementById('gpScript').textContent=g.script;
+  const dc=()=>{navigator.clipboard.writeText(g.script).then(showToast).catch(()=>{const t=document.createElement('textarea');t.value=g.script;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);showToast()})};
+  document.getElementById('gpCopySmall').onclick=dc;document.getElementById('gpCopyBig').onclick=dc;
+  const rel=games.filter((r,i)=>i!==idx&&r.tags.some(t=>g.tags.includes(t))).slice(0,3);
+  document.getElementById('gpRelated').innerHTML=rel.map(r=>`<div class="rel-card glass-card rounded-xl p-3.5 flex items-center gap-3" onclick="goToGame(${games.indexOf(r)})"><div class="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center flex-shrink-0"><span class="iconify text-accent text-sm" data-icon="${r.icon}"></span></div><div class="min-w-0 flex-1"><div class="text-white text-[12px] font-medium truncate">${r.name}</div><div class="text-slate-700 text-[10px]">${r.tags.join(' · ')}</div></div><span class="iconify text-slate-700 text-sm rel-arr" data-icon="mdi:chevron-right"></span></div>`).join('');
+  sw('game');history.pushState(null,'',`#script/${g.name.toLowerCase().replace(/\s+/g,'-')}`)
+}
+
+window.addEventListener('popstate',()=>{if(location.hash.startsWith('#script/')){const s=location.hash.replace('#script/',''),i=games.findIndex(g=>g.name.toLowerCase().replace(/\s+/g,'-')===s);i!==-1?goToGame(i):goHome()}else if(location.hash==='#about')goAbout();else goHome()});
+
+const gG=document.getElementById('gameGrid'),nR=document.getElementById('noResults'),rC=document.getElementById('resultCount'),cB=document.getElementById('scriptCountBadge');
+function render(l){gG.innerHTML='';cB.textContent=l.length;if(!l.length){nR.classList.add('show');rC.textContent='';return}nR.classList.remove('show');rC.textContent=l.length===games.length?'':`${l.length} found`;l.forEach((g,i)=>{const ri=games.indexOf(g),c=document.createElement('div');c.className='glass-card rounded-xl p-4 flex flex-col';c.style.cssText=`opacity:0;transform:translateY(14px);transition:all 0.45s cubic-bezier(0.23,1,0.32,1) ${i*35}ms`;c.innerHTML=`<div class="flex items-start gap-3 mb-3"><div class="w-9 h-9 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center flex-shrink-0"><span class="iconify text-accent text-base" data-icon="${g.icon}"></span></div><div class="min-w-0"><h3 class="text-white font-semibold text-[13px] leading-tight mb-1 truncate">${g.name}</h3><div class="flex items-center gap-1"><span class="tag tag-ok">Working</span>${g.tags.map(t=>`<span class="tag tag-accent">${t}</span>`).join('')}</div></div></div><p class="text-slate-600 text-[11px] font-light leading-relaxed mb-3 flex-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${g.desc}</p><div class="flex items-center gap-2"><button class="vb btn-secondary flex-1 py-2 rounded-lg text-[11px] font-semibold flex items-center justify-center gap-1"><span class="iconify text-xs" data-icon="mdi:eye-outline"></span>View</button><button class="gb btn-primary flex-1 py-2 rounded-lg text-[11px] font-semibold text-white flex items-center justify-center gap-1"><span class="iconify text-xs" data-icon="mdi:arrow-right"></span>Get Script</button></div>`;gG.appendChild(c);c.querySelector('.vb').addEventListener('click',e=>{e.stopPropagation();goToGame(ri)});c.querySelector('.gb').addEventListener('click',e=>{e.stopPropagation();goToGame(ri)});requestAnimationFrame(()=>requestAnimationFrame(()=>{c.style.opacity='1';c.style.transform='translateY(0)'}))})}
+render(games);
+
+const sI=document.getElementById('gameSearch'),cS=document.getElementById('clearSearch');
+sI.addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();cS.classList.toggle('hidden',!q);render(games.filter(g=>g.name.toLowerCase().includes(q)||g.tags.some(t=>t.toLowerCase().includes(q))||g.desc.toLowerCase().includes(q)||g.features.some(f=>f.toLowerCase().includes(q))))});
+cS.addEventListener('click',()=>{sI.value='';cS.classList.add('hidden');render(games);sI.focus()});
+function clearSearchInput(){sI.value='';cS.classList.add('hidden');render(games);sI.focus()}
+
+const cT=document.getElementById('copyToast');let tT;
+function showToast(){clearTimeout(tT);cT.classList.add('show');tT=setTimeout(()=>cT.classList.remove('show'),2000)}
+
+const mT=document.getElementById('menuToggle'),mM=document.getElementById('mobileMenu'),mI=document.getElementById('menuIcon');let mO=false;
+mT.addEventListener('click',()=>{mO=!mO;mM.style.maxHeight=mO?'200px':'0';mM.style.opacity=mO?'1':'0';mI.setAttribute('data-icon',mO?'mdi:close':'mdi:menu')});
+function closeMobile(){mO=false;mM.style.maxHeight='0';mM.style.opacity='0';mI.setAttribute('data-icon','mdi:menu')}
+
+const rO=new IntersectionObserver(e=>e.forEach(en=>{if(en.isIntersecting)en.target.classList.add('active')}),{threshold:0.08,rootMargin:'0px 0px -30px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>rO.observe(el));
+
+document.querySelectorAll('.faq-toggle').forEach(t=>{t.addEventListener('click',()=>{const i=t.closest('.faq-item'),c=i.querySelector('.faq-content'),ic=i.querySelector('.faq-icon'),o=c.style.maxHeight&&c.style.maxHeight!=='0px';document.querySelectorAll('.faq-content').forEach(x=>x.style.maxHeight='0px');document.querySelectorAll('.faq-icon').forEach(x=>{x.setAttribute('data-icon','mdi:plus');x.style.transform='rotate(0)'});if(!o){c.style.maxHeight=c.scrollHeight+'px';ic.setAttribute('data-icon','mdi:minus');ic.style.transform='rotate(180deg)'}})});
+
+if(location.hash.startsWith('#script/')){const s=location.hash.replace('#script/',''),i=games.findIndex(g=>g.name.toLowerCase().replace(/\s+/g,'-')===s);if(i!==-1)setTimeout(()=>goToGame(i),120)}
+else if(location.hash==='#about')setTimeout(()=>goAbout(),120);
+</script>
+</body>
 </html>

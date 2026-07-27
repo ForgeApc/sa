@@ -1,73 +1,56 @@
-# React + TypeScript + Vite
+# Polluted Hub — Website
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Marketing site for the Polluted Hub Roblox script hub. A single self-contained
+`index.html` with no build step.
 
-Currently, two official plugins are available:
+## Files
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+| File | Purpose |
+| --- | --- |
+| `index.html` | The entire site — markup, styles and script |
+| `assets/logo.png` | Logo used in the nav, About page, footers and favicon |
 
-## React Compiler
+## Running it
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Open `index.html` directly, or serve the folder:
 
-## Expanding the ESLint configuration
-
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
-
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
-
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+```
+python3 -m http.server
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Then visit http://localhost:8000.
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+## How it works
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
-```
+The site is a three-page SPA driven by hash routing — no server-side routing needed:
+
+- `#` — script list with live search
+- `#about` — comparison table and positioning
+- `#script/<game-name>` — per-game detail page with the loadstring and copy button
+
+## Editing content
+
+**Scripts** live in the `games` array near the top of the `<script>` block. Each entry
+needs `name`, `icon` (an [Iconify](https://icon-sets.iconify.design/) name), `tags`,
+`desc`, `features` and `script`. Adding an entry updates the grid, the search index and
+the related-scripts suggestions automatically.
+
+**Discord links** are `https://discord.gg` with no invite code, in four places: the nav,
+the About page CTA, the game-page help card, and the social icons in all three footers.
+The footer social links (Discord, YouTube, Telegram) are all still `href="#"`.
+
+## Known caveats
+
+- **Tailwind is loaded from `cdn.tailwindcss.com`**, which is the play-CDN build. It
+  prints a "should not be used in production" console warning, adds ~400 KB on every
+  page load, and flashes unstyled content on slow connections. For production, compile
+  Tailwind to a static CSS file instead.
+- **Icons come from Iconify's runtime API.** Icon glyphs are fetched from
+  `api.iconify.design` on page load, so they need network access to appear.
+- **Fonts come from Google Fonts.** They fall back to system sans if unreachable.
+- The footers read `© 2025`.
+
+## Deploying
+
+Vercel serves this as-is with no build command — `vercel.json` only enables clean URLs.
+Any static host (GitHub Pages, Netlify, Cloudflare Pages) works the same way.
