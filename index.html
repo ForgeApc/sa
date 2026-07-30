@@ -59,6 +59,12 @@ body::before{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opa
 .tag{font-size:10px;padding:2px 7px;border-radius:5px;font-weight:600;letter-spacing:0.02em}
 .tag-accent{background:linear-gradient(140deg,rgba(59,130,246,0.22),rgba(59,130,246,0.09));color:#8ec0ff;border:1px solid rgba(96,165,250,0.28);box-shadow:0 1px 0 rgba(255,255,255,0.07) inset}
 .tag-ok{background:linear-gradient(140deg,rgba(34,197,94,0.20),rgba(34,197,94,0.07));color:#6ee7a5;border:1px solid rgba(74,222,128,0.24);box-shadow:0 1px 0 rgba(255,255,255,0.07) inset}
+.tag-off{background:linear-gradient(140deg,rgba(148,163,184,0.20),rgba(148,163,184,0.06));color:#a8b4c8;border:1px solid rgba(148,163,184,0.24);box-shadow:0 1px 0 rgba(255,255,255,0.06) inset}
+.tag-soon{background:linear-gradient(140deg,rgba(250,204,21,0.20),rgba(250,204,21,0.06));color:#fde047;border:1px solid rgba(250,204,21,0.24);box-shadow:0 1px 0 rgba(255,255,255,0.06) inset}
+.is-off{opacity:.72}
+.is-off:hover{opacity:1}
+.btn-disabled{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);color:#5b6678;cursor:not-allowed}
+.btn-disabled:hover{transform:none}
 
 /* TEXT */
 .text-accent{color:#3b82f6}
@@ -167,7 +173,7 @@ html{scroll-behavior:smooth}
     <div class="max-w-5xl mx-auto text-center">
       <div class="reveal inline-flex items-center gap-2 glass-surface rounded-full px-3.5 py-1.5 mb-7">
         <span class="w-1.5 h-1.5 rounded-full bg-green-400 pulse-dot"></span>
-        <span class="text-[11px] font-medium text-slate-500">All scripts working</span>
+        <span id="heroStatus" class="text-[11px] font-medium text-slate-500">All scripts working</span>
       </div>
       <h1 class="reveal text-4xl sm:text-5xl md:text-[56px] font-extrabold tracking-tight leading-[1.05] mb-4" style="transition-delay:60ms">
         <span class="text-white">Premium </span><span class="text-accent-soft">Roblox Scripts</span>
@@ -433,7 +439,7 @@ html{scroll-behavior:smooth}
         <div>
           <div class="flex items-center gap-2 mb-1 flex-wrap">
             <h1 id="gpTitle" class="text-white font-bold text-xl md:text-2xl"></h1>
-            <span class="tag tag-ok">Working</span>
+            <span id="gpStatus" class="tag tag-ok">Working</span>
           </div>
           <div id="gpTags" class="flex items-center gap-1.5 flex-wrap"></div>
         </div>
@@ -443,6 +449,7 @@ html{scroll-behavior:smooth}
           <div class="glass-card rounded-xl p-5">
             <h3 class="text-white font-semibold text-[13px] mb-2">Description</h3>
             <p id="gpDesc" class="text-slate-500 text-[13px] font-light leading-relaxed"></p>
+            <a id="gpRoblox" href="#" target="_blank" rel="noopener noreferrer" class="inline-flex items-center gap-1.5 mt-3 text-[12px] text-accent-soft hover:text-white font-medium transition-colors duration-300"><span class="iconify text-sm" data-icon="mdi:open-in-new"></span>Open on Roblox</a>
           </div>
           <div class="glass-card rounded-xl p-5">
             <h3 class="text-white font-semibold text-[13px] mb-3">Features</h3>
@@ -462,7 +469,7 @@ html{scroll-behavior:smooth}
           <div class="glass-card rounded-xl overflow-hidden">
             <div class="flex items-center justify-between px-4 py-2.5 border-b border-white/[0.04]">
               <span class="text-[10px] text-slate-600 font-semibold uppercase tracking-wider">Script</span>
-              <span class="tag tag-ok">Ready</span>
+              <span id="gpReady" class="tag tag-ok">Ready</span>
             </div>
             <div class="p-3.5">
               <div class="code-block rounded-lg overflow-hidden">
@@ -480,9 +487,9 @@ html{scroll-behavior:smooth}
             </div>
           </div>
           <div class="glass-card rounded-xl p-4 space-y-2.5">
-            <div class="flex items-center justify-between"><span class="text-slate-600 text-[11px]">Status</span><span class="flex items-center gap-1.5 text-[11px] text-green-400 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-green-400 pulse-dot"></span>Working</span></div>
+            <div class="flex items-center justify-between"><span class="text-slate-600 text-[11px]">Status</span><span id="gpStatusRow" class="flex items-center gap-1.5 text-[11px] text-green-400 font-medium"><span class="w-1.5 h-1.5 rounded-full bg-green-400 pulse-dot"></span>Working</span></div>
             <div class="divider"></div>
-            <div class="flex items-center justify-between"><span class="text-slate-600 text-[11px]">Updated</span><span class="text-slate-400 text-[11px]">Within 3 weeks</span></div>
+            <div class="flex items-center justify-between"><span class="text-slate-600 text-[11px]">Updated</span><span id="gpUpdated" class="text-slate-400 text-[11px]">Within 3 weeks</span></div>
             <div class="divider"></div>
             <div class="flex items-center justify-between"><span class="text-slate-600 text-[11px]">Version</span><span class="text-slate-400 text-[11px]">v3.2.1</span></div>
             <div class="divider"></div>
@@ -523,27 +530,34 @@ html{scroll-behavior:smooth}
 
 <script>
 const games=[
-{name:"Blox Fruits",icon:"mdi:sword-cross",tags:["Combat","Farming"],desc:"Auto farm, auto quest, fruit sniper, raid helper, teleport, sea events, and 50+ more features for Blox Fruits.",features:["Auto Farm","Fruit Sniper","Auto Quest","Raid Helper","Teleport","Sea Events","Stat Farm","Boss Farm","Auto Race","Skill Farm"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/blox-fruits'))()"},
-{name:"Da Hood",icon:"mdi:knife-military",tags:["Combat","PvP"],desc:"Silent aim, kill aura, stomp aura, anti-stun, and full PvP overhaul for Da Hood.",features:["Silent Aim","Kill Aura","Stomp Aura","Anti Stun","Auto Stomp","Gun Mods","Speed","FOV Changer"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/da-hood'))()"},
-{name:"Pet Simulator 99",icon:"mdi:paw",tags:["Farming","Utility"],desc:"Auto farm coins & diamonds, auto hatch eggs, auto enchant, duplicate pets, and speed boosts.",features:["Auto Hatch","Auto Farm","Auto Enchant","Dupe Pets","Speed Boost","Coin Farm","Diamond Farm","Rank Up"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/pet-sim-99'))()"},
-{name:"Arsenal",icon:"mdi:crosshairs-gps",tags:["Combat","FPS"],desc:"ESP, aimbot with FOV, prediction, no recoil, infinite ammo, and wall-check.",features:["Aimbot","ESP","No Recoil","Infinite Ammo","Prediction","Wall Check","FOV Circle","Gun Mods"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/arsenal'))()"},
-{name:"King Legacy",icon:"mdi:crown",tags:["Farming","Adventure"],desc:"Auto quest, devil fruit notifier, ship speed, instant teleport, boss auto-farm.",features:["Auto Quest","DF Notifier","Teleport","Boss Farm","Ship Speed","Auto Farm","Skill Farm","Raids"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/king-legacy'))()"},
-{name:"Brookhaven RP",icon:"mdi:home-city",tags:["Utility","Fun"],desc:"Speed mod, fly, noclip, vehicle spawner, admin commands, money glitch.",features:["Fly","Noclip","Speed","Admin Cmds","Vehicle Spawn","Money Glitch","Custom Emotes","Teleport"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/brookhaven'))()"},
-{name:"Murder Mystery 2",icon:"mdi:skull",tags:["Utility","Fun"],desc:"Role reveal, ESP, coin farm, speed, and instant role detection.",features:["Role Reveal","ESP","Coin Farm","Speed","Gun Aura","Murderer Alert","Sheriff Alert","Teleport"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/mm2'))()"},
-{name:"Bee Swarm Simulator",icon:"mdi:flower-tulip",tags:["Farming","Sim"],desc:"Auto farm pollen, auto quest, token collector, hive mind, field switcher.",features:["Auto Farm","Auto Quest","Token Collect","Field Switch","Hive Mind","Boost Farm","Mob Farm","Mythic Hunt"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/bee-swarm'))()"},
-{name:"Flee the Facility",icon:"mdi:run-fast",tags:["Utility","Horror"],desc:"Exit finder, speed boost, hack door progress, freeze hacker, full ESP.",features:["Exit Finder","Speed Boost","Door Hack","Freeze Hacker","ESP","No Stun","Distance Alert","Auto Hide"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/flee-the-facility'))()"},
-{name:"Tower of Hell",icon:"mdi:tower-fire",tags:["Utility","Obby"],desc:"Instant win, teleport to top, noclip, fly, infinite jump.",features:["Instant Win","TP to Top","Noclip","Fly","Infinite Jump","Speed","Anti Fall","Checkpoint TP"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/tower-of-hell'))()"},
-{name:"Driving Empire",icon:"mdi:car-sports",tags:["Fun","Racing"],desc:"Unlimited money, max speed, nitro boost, car spawner, teleport.",features:["Unlimited Money","Max Speed","Nitro Boost","Car Spawn","Teleport","No Damage","Drift Mod","Race Win"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/driving-empire'))()"},
-{name:"Anime Adventures",icon:"mdi:sword",tags:["Farming","Anime"],desc:"Auto farm story, infinite gems, auto summon, unit upgrade, auto raid.",features:["Auto Story","Infinite Gems","Auto Summon","Unit Upgrade","Auto Raid","AFK Farm","Speed Farm","World Farm"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/anime-adventures'))()"},
-{name:"Jailbreak",icon:"mdi:police-badge",tags:["Utility","Action"],desc:"Auto rob, vehicle mods, teleport, prison escape, infinite money.",features:["Auto Rob","Vehicle Mods","Teleport","Prison Escape","Inf Money","Speed","Jetpack","No Arrest"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/jailbreak'))()"},
-{name:"Slap Battles",icon:"mdi:hand-back-right",tags:["Fun","Combat"],desc:"Auto slap, reach extender, anti-knockback, glove unlocker, slap aura.",features:["Auto Slap","Reach Extend","Anti KB","Glove Unlock","Slap Aura","Speed","TP to Players","Kill Aura"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/slap-battles'))()"},
-{name:"Anime Fighters",icon:"mdi:boxing-glove",tags:["Farming","Anime"],desc:"Auto farm, auto raid, infinite yen, auto summon, teleport.",features:["Auto Farm","Auto Raid","Infinite Yen","Auto Summon","Teleport","Speed Farm","Boss Farm","Shard Farm"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/anime-fighters'))()"},
-{name:"Rogue Lineage",icon:"mdi:axe",tags:["Combat","RPG"],desc:"Auto skill, silent aim, ESP classes, instant cast, combat overlay.",features:["Auto Skill","Silent Aim","Class ESP","Instant Cast","Combat Overlay","No Cooldown","Auto Parry","HP Alert"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/rogue-lineage'))()"},
-{name:"Build A Boat",icon:"mdi:sail-boat",tags:["Utility","Fun"],desc:"Infinite blocks, speed boost, fly, teleport to end, auto-build.",features:["Infinite Blocks","Speed Boost","Fly","TP to End","Auto Build","No Destroy","Jetpack","Stabilize"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/build-a-boat'))()"},
-{name:"Natural Disaster",icon:"mdi:weather-lightning",tags:["Utility","Survival"],desc:"Disaster alert, ESP, god mode, speed, auto-survive.",features:["Disaster Alert","ESP","God Mode","Speed","Auto Survive","Safe Spot TP","No Ragdoll","Item ESP"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/natural-disaster'))()"},
-{name:"Greenville",icon:"mdi:gas-station",tags:["Fun","RP"],desc:"Money glitch, speed mods, car fly, teleport, admin commands.",features:["Money Glitch","Speed Mod","Car Fly","Teleport","Admin Cmds","No Limit","Fuel Hack","Weather Control"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/greenville'))()"},
-{name:"Pizza Factory Tycoon",icon:"mdi:pizza",tags:["Farming","Tycoon"],desc:"Auto collect, instant build, money multiplier, speed, auto-deliver.",features:["Auto Collect","Instant Build","Money Multi","Speed","Auto Deliver","Auto Upgrade","Unlock All","No Cooldown"],script:"loadstring(game:HttpGet('https://pollutedhub.dev/pizza-factory'))()"}
+{name:"Survive Zombie Arena",icon:"mdi:zombie",tags:["Survival"],status:"working",roblox:"https://www.roblox.com/games/114204398207377/Survive-Zombie-Arena",desc:"Actively maintained Polluted Hub loader for Survive Zombie Arena.",features:[],script:""},
+{name:"Garden Horizons",icon:"mdi:flower-tulip",tags:["Farming"],status:"working",roblox:"https://www.roblox.com/games/130594398886540/Garden-Horizons",desc:"Actively maintained Polluted Hub loader for Garden Horizons.",features:[],script:""},
+{name:"Evomon",icon:"mdi:paw",tags:["Adventure"],status:"working",roblox:"https://www.roblox.com/games/134381727982611/Evomon",desc:"Actively maintained Polluted Hub loader for Evomon.",features:[],script:""},
+{name:"Grow A Garden 2",icon:"mdi:sprout",tags:["Farming"],status:"working",roblox:"https://www.roblox.com/games/97598239454123/Grow-a-Garden-2",desc:"Actively maintained Polluted Hub loader for Grow A Garden 2.",features:[],script:""},
+{name:"Build A Ring Farm",icon:"mdi:ring",tags:["Farming", "Tycoon"],status:"working",roblox:"https://www.roblox.com/games/107646426076756/Build-A-Ring-Farm",desc:"Actively maintained Polluted Hub loader for Build A Ring Farm.",features:[],script:""},
+{name:"Slime RNG",icon:"mdi:blur",tags:["RNG"],status:"working",roblox:"https://www.roblox.com/games/92416421522960/Slime-RNG",desc:"Actively maintained Polluted Hub loader for Slime RNG.",features:[],script:""},
+{name:"Kick A Lucky Block",icon:"mdi:cube-outline",tags:["RNG", "Fun"],status:"working",roblox:"https://www.roblox.com/games/89469502395769/Kick-a-Lucky-Block",desc:"Actively maintained Polluted Hub loader for Kick A Lucky Block.",features:[],script:""},
+{name:"Sailor Piece",icon:"mdi:sail-boat",tags:["Adventure", "Combat"],status:"working",roblox:"https://www.roblox.com/games/77747658251236/Sailor-Piece",desc:"Actively maintained Polluted Hub loader for Sailor Piece.",features:[],script:""},
+{name:"99 Nights in the Forest",icon:"mdi:pine-tree",tags:["Survival"],status:"discontinued",roblox:"https://www.roblox.com/games/79546208627805/99-Nights-in-the-Forest",desc:"Polluted Hub loader for 99 Nights in the Forest. No longer receiving updates.",features:[],script:""},
+{name:"Plants vs Brainrots",icon:"mdi:sprout-outline",tags:["Tower Defence"],status:"discontinued",roblox:"https://www.roblox.com/games/127742093697776/Plants-Vs-Brainrots",desc:"Polluted Hub loader for Plants vs Brainrots. No longer receiving updates.",features:[],script:""},
+{name:"Build ur base",icon:"mdi:home-variant",tags:["Tycoon"],status:"discontinued",roblox:"https://www.roblox.com/games/75366259315586/build-ur-base",desc:"Polluted Hub loader for Build ur base. No longer receiving updates.",features:[],script:""},
+{name:"Fish it",icon:"mdi:fish",tags:["Fishing"],status:"discontinued",roblox:"https://www.roblox.com/games/121864768012064/UPD-Fish-It",desc:"Polluted Hub loader for Fish it. No longer receiving updates.",features:[],script:""},
+{name:"Build A Zoo",icon:"mdi:elephant",tags:["Tycoon"],status:"discontinued",roblox:"https://www.roblox.com/games/105555311806207/Build-a-Zoo-Snow",desc:"Polluted Hub loader for Build A Zoo. No longer receiving updates.",features:[],script:""},
+{name:"Hypershot",icon:"mdi:pistol",tags:["FPS", "Combat"],status:"discontinued",roblox:"https://www.roblox.com/games/17516596118/BATTLEPASS-Hypershot",desc:"Polluted Hub loader for Hypershot. No longer receiving updates.",features:[],script:""},
+{name:"Grow A Garden",icon:"mdi:flower",tags:["Farming"],status:"discontinued",roblox:"https://www.roblox.com/games/126884695634066/Grow-a-Garden",desc:"Polluted Hub loader for Grow A Garden. No longer receiving updates.",features:[],script:""},
+{name:"Sniper Duels",icon:"mdi:crosshairs",tags:["FPS", "PvP"],status:"discontinued",roblox:"https://www.roblox.com/games/109397169461300/SNIPER-DUELS",desc:"Polluted Hub loader for Sniper Duels. No longer receiving updates.",features:[],script:""},
+{name:"Hunty Zombie",icon:"mdi:skull-crossbones",tags:["Survival"],status:"discontinued",roblox:"https://www.roblox.com/games/103754275310547/Hunty-Zombie-UPDATE-3",desc:"Polluted Hub loader for Hunty Zombie. No longer receiving updates.",features:[],script:""},
+{name:"The Forge",icon:"mdi:anvil",tags:["RPG"],status:"discontinued",roblox:"https://www.roblox.com/games/129009554587176/Forgotten-Kingdom",desc:"Polluted Hub loader for The Forge. No longer receiving updates.",features:[],script:""},
+{name:"Abyss",icon:"mdi:waves",tags:["Adventure"],status:"discontinued",roblox:"https://www.roblox.com/games/127794225497302/Abyss",desc:"Polluted Hub loader for Abyss. No longer receiving updates.",features:[],script:""},
+{name:"Anime Weapons",icon:"mdi:sword",tags:["Anime", "Combat"],status:"soon",roblox:"https://www.roblox.com/games/79189799490564/Anime-Weapons",desc:"Polluted Hub support for Anime Weapons is in development.",features:[],script:""}
 ];
+
+const STATUS={
+  working:{label:"Working",cls:"tag-ok"},
+  discontinued:{label:"Discontinued",cls:"tag-off"},
+  soon:{label:"Coming soon",cls:"tag-soon"}
+};
+const statusOf=g=>STATUS[g.status]||STATUS.working;
 
 const P={main:document.getElementById('mainPage'),about:document.getElementById('aboutPage'),game:document.getElementById('gamePage')};
 let cur='main';
@@ -557,10 +571,34 @@ function goToGame(idx){
   document.getElementById('gpIcon').innerHTML=`<span class="iconify text-accent text-2xl" data-icon="${g.icon}"></span>`;
   document.getElementById('gpTags').innerHTML=g.tags.map(t=>`<span class="tag tag-accent">${t}</span>`).join('');
   document.getElementById('gpDesc').textContent=g.desc;
-  document.getElementById('gpFeatures').innerHTML=g.features.map(f=>`<span class="feat-pill"><span class="iconify text-accent/40 text-[10px]" data-icon="mdi:check-circle"></span>${f}</span>`).join('');
-  document.getElementById('gpScript').textContent=g.script;
-  const dc=()=>{navigator.clipboard.writeText(g.script).then(showToast).catch(()=>{const t=document.createElement('textarea');t.value=g.script;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);showToast()})};
-  document.getElementById('gpCopySmall').onclick=dc;document.getElementById('gpCopyBig').onclick=dc;
+  // Features card only renders when we actually have features for the game
+  const featWrap=document.getElementById('gpFeatures'),featCard=featWrap.closest('.glass-card');
+  featWrap.innerHTML=(g.features||[]).map(f=>`<span class="feat-pill"><span class="iconify text-accent/40 text-[10px]" data-icon="mdi:check-circle"></span>${f}</span>`).join('');
+  featCard.style.display=(g.features&&g.features.length)?'':'none';
+
+  const st=statusOf(g),hasScript=!!g.script;
+  const badge=document.getElementById('gpStatus');
+  badge.textContent=st.label;badge.className='tag '+st.cls;
+
+  const row=document.getElementById('gpStatusRow');
+  row.innerHTML=`<span class="w-1.5 h-1.5 rounded-full ${g.status==='working'?'bg-green-400 pulse-dot':g.status==='soon'?'bg-yellow-400':'bg-slate-500'}"></span>${st.label}`;
+  row.className='flex items-center gap-1.5 text-[11px] font-medium '+(g.status==='working'?'text-green-400':g.status==='soon'?'text-yellow-300':'text-slate-400');
+
+  document.getElementById('gpUpdated').textContent=g.status==='working'?'Within 3 weeks':g.status==='soon'?'Not released':'No longer updated';
+
+  const ready=document.getElementById('gpReady');
+  ready.textContent=hasScript?'Ready':'Unavailable';
+  ready.className='tag '+(hasScript?'tag-ok':'tag-off');
+
+  const rb=document.getElementById('gpRoblox');
+  if(g.roblox){rb.href=g.roblox;rb.style.display=''}else{rb.style.display='none'}
+
+  document.getElementById('gpScript').textContent=hasScript?g.script:'-- script not published yet';
+  const dc=()=>{if(!hasScript){showToast('No script available for this game yet');return}navigator.clipboard.writeText(g.script).then(()=>showToast()).catch(()=>{const t=document.createElement('textarea');t.value=g.script;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);showToast()})};
+  const big=document.getElementById('gpCopyBig');
+  big.className=(hasScript?'btn-primary':'btn-disabled')+' w-full py-3 rounded-lg text-[13px] font-semibold '+(hasScript?'text-white ':'')+'flex items-center justify-center gap-2';
+  big.innerHTML=`<span class="iconify text-base" data-icon="${hasScript?'mdi:content-copy':'mdi:clock-outline'}"></span>${hasScript?'Copy Script':'Not available yet'}`;
+  document.getElementById('gpCopySmall').onclick=dc;big.onclick=dc;
   const rel=games.filter((r,i)=>i!==idx&&r.tags.some(t=>g.tags.includes(t))).slice(0,3);
   document.getElementById('gpRelated').innerHTML=rel.map(r=>`<div class="rel-card glass-card rounded-xl p-3.5 flex items-center gap-3" onclick="goToGame(${games.indexOf(r)})"><div class="w-8 h-8 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center flex-shrink-0"><span class="iconify text-accent text-sm" data-icon="${r.icon}"></span></div><div class="min-w-0 flex-1"><div class="text-white text-[12px] font-medium truncate">${r.name}</div><div class="text-slate-700 text-[10px]">${r.tags.join(' · ')}</div></div><span class="iconify text-slate-700 text-sm rel-arr" data-icon="mdi:chevron-right"></span></div>`).join('');
   sw('game');history.pushState(null,'',`#script/${g.name.toLowerCase().replace(/\s+/g,'-')}`)
@@ -569,10 +607,17 @@ function goToGame(idx){
 window.addEventListener('popstate',()=>{if(location.hash.startsWith('#script/')){const s=location.hash.replace('#script/',''),i=games.findIndex(g=>g.name.toLowerCase().replace(/\s+/g,'-')===s);i!==-1?goToGame(i):goHome()}else if(location.hash==='#about')goAbout();else goHome()});
 
 const gG=document.getElementById('gameGrid'),nR=document.getElementById('noResults'),rC=document.getElementById('resultCount'),cB=document.getElementById('scriptCountBadge');
-function render(l){gG.innerHTML='';cB.textContent=l.length;if(!l.length){nR.classList.add('show');rC.textContent='';return}nR.classList.remove('show');rC.textContent=l.length===games.length?'':`${l.length} found`;l.forEach((g,i)=>{const ri=games.indexOf(g),c=document.createElement('div');c.className='glass-card rounded-xl p-4 flex flex-col';c.style.cssText=`opacity:0;transform:translateY(16px) scale(.986);filter:blur(6px);transition:opacity .55s cubic-bezier(0.23,1,0.32,1) ${i*35}ms,transform .55s cubic-bezier(0.23,1,0.32,1) ${i*35}ms,filter .55s cubic-bezier(0.23,1,0.32,1) ${i*35}ms`;c.innerHTML=`<div class="flex items-start gap-3 mb-3"><div class="w-9 h-9 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center flex-shrink-0"><span class="iconify text-accent text-base" data-icon="${g.icon}"></span></div><div class="min-w-0"><h3 class="text-white font-semibold text-[13px] leading-tight mb-1 truncate">${g.name}</h3><div class="flex items-center gap-1"><span class="tag tag-ok">Working</span>${g.tags.map(t=>`<span class="tag tag-accent">${t}</span>`).join('')}</div></div></div><p class="text-slate-600 text-[11px] font-light leading-relaxed mb-3 flex-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${g.desc}</p><div class="flex items-center gap-2"><button class="vb btn-secondary flex-1 py-2 rounded-lg text-[11px] font-semibold flex items-center justify-center gap-1"><span class="iconify text-xs" data-icon="mdi:eye-outline"></span>View</button><button class="gb btn-primary flex-1 py-2 rounded-lg text-[11px] font-semibold text-white flex items-center justify-center gap-1"><span class="iconify text-xs" data-icon="mdi:arrow-right"></span>Get Script</button></div>`;gG.appendChild(c);c.querySelector('.vb').addEventListener('click',e=>{e.stopPropagation();goToGame(ri)});c.querySelector('.gb').addEventListener('click',e=>{e.stopPropagation();goToGame(ri)});requestAnimationFrame(()=>requestAnimationFrame(()=>{c.style.opacity='1';c.style.transform='none';c.style.filter='blur(0)';
+function render(l){gG.innerHTML='';cB.textContent=l.length;if(!l.length){nR.classList.add('show');rC.textContent='';return}nR.classList.remove('show');rC.textContent=l.length===games.length?'':`${l.length} found`;l.forEach((g,i)=>{const ri=games.indexOf(g),c=document.createElement('div');c.className='glass-card rounded-xl p-4 flex flex-col';c.style.cssText=`opacity:0;transform:translateY(16px) scale(.986);filter:blur(6px);transition:opacity .55s cubic-bezier(0.23,1,0.32,1) ${i*35}ms,transform .55s cubic-bezier(0.23,1,0.32,1) ${i*35}ms,filter .55s cubic-bezier(0.23,1,0.32,1) ${i*35}ms`;const st=statusOf(g),hasScript=!!g.script;
+    if(g.status!=='working')c.classList.add('is-off');
+    c.innerHTML=`<div class="flex items-start gap-3 mb-3"><div class="w-9 h-9 rounded-lg bg-white/[0.03] border border-white/[0.05] flex items-center justify-center flex-shrink-0"><span class="iconify text-accent text-base" data-icon="${g.icon}"></span></div><div class="min-w-0"><h3 class="text-white font-semibold text-[13px] leading-tight mb-1 truncate">${g.name}</h3><div class="flex items-center gap-1 flex-wrap"><span class="tag ${st.cls}">${st.label}</span>${g.tags.map(t=>`<span class="tag tag-accent">${t}</span>`).join('')}</div></div></div><p class="text-slate-600 text-[11px] font-light leading-relaxed mb-3 flex-1" style="display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">${g.desc}</p><div class="flex items-center gap-2"><button class="vb btn-secondary flex-1 py-2 rounded-lg text-[11px] font-semibold flex items-center justify-center gap-1"><span class="iconify text-xs" data-icon="mdi:eye-outline"></span>View</button><button class="gb ${hasScript?'btn-primary':'btn-disabled'} flex-1 py-2 rounded-lg text-[11px] font-semibold ${hasScript?'text-white':''} flex items-center justify-center gap-1"><span class="iconify text-xs" data-icon="${hasScript?'mdi:arrow-right':'mdi:clock-outline'}"></span>${hasScript?'Get Script':'No script yet'}</button></div>`;gG.appendChild(c);c.querySelector('.vb').addEventListener('click',e=>{e.stopPropagation();goToGame(ri)});c.querySelector('.gb').addEventListener('click',e=>{e.stopPropagation();goToGame(ri)});requestAnimationFrame(()=>requestAnimationFrame(()=>{c.style.opacity='1';c.style.transform='none';c.style.filter='blur(0)';
     // hand styling back to CSS once the entrance finishes, so the hover lift isn't blocked by inline transform
     setTimeout(()=>{c.style.transition='';c.style.transform='';c.style.filter='';c.style.opacity=''},700+i*35)}))})}
 render(games);
+
+// hero badge reflects the real data rather than a fixed claim
+(()=>{const el=document.getElementById('heroStatus');if(!el)return;
+  const active=games.filter(g=>g.status==='working').length;
+  el.textContent=`${active} of ${games.length} scripts actively maintained`;})();
 
 const sI=document.getElementById('gameSearch'),cS=document.getElementById('clearSearch');
 sI.addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();cS.classList.toggle('hidden',!q);render(games.filter(g=>g.name.toLowerCase().includes(q)||g.tags.some(t=>t.toLowerCase().includes(q))||g.desc.toLowerCase().includes(q)||g.features.some(f=>f.toLowerCase().includes(q))))});
@@ -580,7 +625,7 @@ cS.addEventListener('click',()=>{sI.value='';cS.classList.add('hidden');render(g
 function clearSearchInput(){sI.value='';cS.classList.add('hidden');render(games);sI.focus()}
 
 const cT=document.getElementById('copyToast');let tT;
-function showToast(){clearTimeout(tT);cT.classList.add('show');tT=setTimeout(()=>cT.classList.remove('show'),2000)}
+function showToast(msg){clearTimeout(tT);cT.querySelector('span:last-child').textContent=msg||'Copied!';cT.classList.add('show');tT=setTimeout(()=>cT.classList.remove('show'),2000)}
 
 const mT=document.getElementById('menuToggle'),mM=document.getElementById('mobileMenu'),mI=document.getElementById('menuIcon');let mO=false;
 mT.addEventListener('click',()=>{mO=!mO;mM.style.maxHeight=mO?'200px':'0';mM.style.opacity=mO?'1':'0';mI.setAttribute('data-icon',mO?'mdi:close':'mdi:menu')});
