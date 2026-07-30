@@ -30,10 +30,23 @@ The site is a three-page SPA driven by hash routing — no server-side routing n
 
 ## Editing content
 
-**Scripts** live in the `games` array near the top of the `<script>` block. Each entry
-needs `name`, `icon` (an [Iconify](https://icon-sets.iconify.design/) name), `tags`,
-`desc`, `features` and `script`. Adding an entry updates the grid, the search index and
-the related-scripts suggestions automatically.
+**Scripts** live in the `games` array near the top of the `<script>` block. Adding an
+entry updates the grid, the search index and the related-scripts suggestions
+automatically. Fields:
+
+| Field | Notes |
+| --- | --- |
+| `name` | Display name |
+| `icon` | An [Iconify](https://icon-sets.iconify.design/) name, e.g. `mdi:fish` |
+| `tags` | Array of short genre labels |
+| `status` | `working`, `discontinued` or `soon` — drives the badge, the dimming and the sidebar |
+| `roblox` | Link to the game; shown as "Open on Roblox". Omit to hide the link |
+| `desc` | One or two sentences, shown on the card and detail page |
+| `features` | Array of feature names. Leave `[]` and the Features card hides itself |
+| `script` | The full loadstring. Leave `""` and the copy buttons are disabled |
+
+The hero badge counts `status: "working"` entries, so it stays correct on its own —
+don't hardcode a number there.
 
 **Discord links** point at `https://discord.gg/pollutedhub` in six places: the nav, the
 About page CTA, the game-page help card, and the Discord icon in each of the three
