@@ -48,7 +48,7 @@ automatically. Fields:
 The hero badge counts `status: "working"` entries, so it stays correct on its own —
 don't hardcode a number there.
 
-**Discord links** point at `https://discord.gg/pollutedhub` in six places: the nav, the
+**Discord links** point at `https://discord.gg/meyTBdQJwE` in six places: the nav, the
 About page CTA, the game-page help card, and the Discord icon in each of the three
 footers. The YouTube and Telegram footer icons are still `href="#"` placeholders.
 
