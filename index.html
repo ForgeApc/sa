@@ -80,6 +80,19 @@ body::before{content:'';position:fixed;inset:0;z-index:1;pointer-events:none;opa
 /* CODE */
 .code-block{background:linear-gradient(160deg,rgba(0,0,0,0.55),rgba(3,16,12,0.6));backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border:1px solid rgba(74,222,128,0.16);box-shadow:0 1px 0 rgba(255,255,255,0.05) inset,0 0 24px -14px rgba(74,222,128,0.5);font-family:'JetBrains Mono',monospace}
 
+/* ADMIN */
+.adm-input{width:100%;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:8px 10px;font-size:12px;color:#e6edf7;transition:border-color .25s,background .25s}
+.adm-input:focus{outline:none;border-color:rgba(96,165,250,0.45);background:rgba(255,255,255,0.05)}
+.adm-input::placeholder{color:#5b6577}
+.adm-label{display:block;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:#7b8698;font-weight:600;margin-bottom:5px}
+.adm-row{display:flex;align-items:center;gap:10px;padding:9px 11px;border-radius:10px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.06);transition:border-color .25s,background .25s}
+.adm-row:hover{border-color:rgba(96,165,250,0.28);background:rgba(255,255,255,0.04)}
+.adm-row.sel{border-color:rgba(96,165,250,0.5);background:rgba(96,165,250,0.07)}
+.adm-mini{width:26px;height:26px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;color:#8b96a8;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);transition:all .25s;flex-shrink:0}
+.adm-mini:hover{color:#fff;border-color:rgba(96,165,250,0.45)}
+.adm-mini.danger:hover{color:#fca5a5;border-color:rgba(248,113,113,0.5)}
+.adm-dirty{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:600;color:#fbbf24;background:rgba(251,191,36,0.09);border:1px solid rgba(251,191,36,0.24);border-radius:999px;padding:3px 9px}
+
 /* PAGES */
 .page{transition:opacity 0.4s cubic-bezier(0.23,1,0.32,1),transform 0.4s cubic-bezier(0.23,1,0.32,1)}
 .page-hidden{opacity:0;transform:translateY(12px);pointer-events:none;position:absolute;width:100%}
@@ -425,6 +438,69 @@ html{scroll-behavior:smooth}
 </div>
 
 <!-- ============ GAME PAGE ============ -->
+<!-- ============ ADMIN HUB ============ -->
+<div id="adminPage" class="page page-hidden">
+  <section class="pt-28 pb-16 px-5 md:px-8">
+    <div class="max-w-5xl mx-auto">
+
+      <!-- lock screen -->
+      <div id="admLock" class="max-w-sm mx-auto glass-card rounded-2xl p-7 text-center">
+        <div class="w-11 h-11 rounded-xl bg-white/[0.03] border border-white/[0.06] flex items-center justify-center mx-auto mb-4">
+          <span class="iconify text-accent text-xl" data-icon="mdi:shield-key-outline"></span>
+        </div>
+        <h1 class="text-white text-lg font-semibold mb-1">Admin Hub</h1>
+        <p class="text-slate-600 text-[11px] font-light mb-5">Enter the access code to manage the script list.</p>
+        <input id="admPass" type="password" inputmode="numeric" autocomplete="off" class="adm-input text-center tracking-[0.3em] mb-3" placeholder="•••••">
+        <p id="admErr" class="text-[11px] text-red-400 mb-3 hidden">Wrong code.</p>
+        <button id="admUnlock" class="btn-primary w-full py-2.5 rounded-lg text-[12px] font-semibold text-white flex items-center justify-center gap-2">
+          <span class="iconify text-sm" data-icon="mdi:lock-open-variant-outline"></span>Unlock
+        </button>
+        <button onclick="goHome()" class="mt-3 text-[11px] text-slate-600 hover:text-slate-400 transition">Back to site</button>
+      </div>
+
+      <!-- panel -->
+      <div id="admPanel" class="hidden" style="display:none">
+        <div class="flex items-center justify-between gap-3 flex-wrap mb-5">
+          <div>
+            <h1 class="text-white text-xl font-semibold flex items-center gap-2">
+              <span class="iconify text-accent text-lg" data-icon="mdi:tune-variant"></span>Admin Hub
+            </h1>
+            <p id="admCount" class="text-slate-600 text-[11px] font-light mt-0.5"></p>
+          </div>
+          <div class="flex items-center gap-2 flex-wrap">
+            <span id="admDirty" class="adm-dirty hidden"><span class="iconify text-[11px]" data-icon="mdi:content-save-alert-outline"></span>Unpublished changes</span>
+            <button id="admAdd" class="btn-primary py-2 px-3.5 rounded-lg text-[11px] font-semibold text-white flex items-center gap-1.5"><span class="iconify text-sm" data-icon="mdi:plus"></span>Add script</button>
+            <button id="admExport" class="btn-secondary py-2 px-3.5 rounded-lg text-[11px] font-semibold flex items-center gap-1.5"><span class="iconify text-sm" data-icon="mdi:export-variant"></span>Export</button>
+            <button id="admReset" class="btn-secondary py-2 px-3.5 rounded-lg text-[11px] font-semibold flex items-center gap-1.5"><span class="iconify text-sm" data-icon="mdi:backup-restore"></span>Reset</button>
+            <button id="admLockBtn" class="btn-secondary py-2 px-3.5 rounded-lg text-[11px] font-semibold flex items-center gap-1.5"><span class="iconify text-sm" data-icon="mdi:lock-outline"></span>Lock</button>
+          </div>
+        </div>
+
+        <div class="grid md:grid-cols-[320px_1fr] gap-4 items-start">
+          <div class="glass-card rounded-xl p-3">
+            <input id="admSearch" class="adm-input mb-2.5" placeholder="Search scripts…">
+            <div id="admList" class="space-y-1.5 max-h-[520px] overflow-y-auto pr-0.5"></div>
+          </div>
+
+          <div id="admEditor" class="glass-card rounded-xl p-5"></div>
+        </div>
+
+        <div id="admExportWrap" class="glass-card rounded-xl p-5 mt-4 hidden">
+          <div class="flex items-center justify-between gap-3 mb-2.5 flex-wrap">
+            <div>
+              <h3 class="text-white text-[13px] font-semibold">Publish to the live site</h3>
+              <p class="text-slate-600 text-[11px] font-light mt-0.5">Replace the <code class="text-accent">const DEFAULT_GAMES=[…]</code> block in <code class="text-accent">index.html</code> with this, then push.</p>
+            </div>
+            <button id="admCopyExport" class="btn-primary py-2 px-3.5 rounded-lg text-[11px] font-semibold text-white flex items-center gap-1.5"><span class="iconify text-sm" data-icon="mdi:content-copy"></span>Copy</button>
+          </div>
+          <pre id="admExportCode" class="code-block rounded-lg p-3.5 text-[10.5px] text-slate-400 overflow-auto max-h-72 whitespace-pre"></pre>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</div>
+
 <div id="gamePage" class="page page-hidden">
   <section class="relative pt-24 pb-12 px-5 md:px-8">
     <div class="max-w-3xl mx-auto">
@@ -528,7 +604,7 @@ html{scroll-behavior:smooth}
 </div>
 
 <script>
-const games=[
+const DEFAULT_GAMES=[
 {name:"Steal an Egg",icon:"mdi:egg-easter",tags:["Pets", "Farming"],status:"working",desc:"Actively maintained Polluted Hub loader for Steal an Egg.",features:["AutoFarm with rarity and preference for weight","AutoHatch","AutoSell Egg/Pet and keep rift required pets","Ac bypassed","Movement Ac bypassed/Delivery bypass","AutoBuy Trails","Remove others pets (FPS)","Remove others eggs (FPS)","Anti Afk (Always enabled)","Anti Treadmill (Locks Treadmill)","Collect cash (cash generated in your plot)"],script:"loadstring(game:HttpGet(\"https://raw.githubusercontent.com/PollutedHub/Sae/refs/heads/main/SaePolluted\"))()"},
 {name:"Survive Zombie Arena",icon:"mdi:zombie",tags:["Survival"],status:"working",roblox:"https://www.roblox.com/games/114204398207377/Survive-Zombie-Arena",desc:"Actively maintained Polluted Hub loader for Survive Zombie Arena.",features:[],script:"loadstring(game:HttpGet(\"https://api.luarmor.net/files/v4/loaders/f7750862cc1392f8fe69d0e8df82fccc.lua\"))()"},
 {name:"Garden Horizons",icon:"mdi:flower-tulip",tags:["Farming"],status:"working",roblox:"https://www.roblox.com/games/130594398886540/Garden-Horizons",desc:"Actively maintained Polluted Hub loader for Garden Horizons.",features:[],script:"loadstring(game:HttpGet(\"https://api.luarmor.net/files/v4/loaders/7e95f50fa8d660cad182e6278cf70afe.lua\"))()"},
@@ -552,6 +628,14 @@ const games=[
 {name:"Anime Weapons",icon:"mdi:sword",tags:["Anime", "Combat"],status:"soon",roblox:"https://www.roblox.com/games/79189799490564/Anime-Weapons",desc:"Polluted Hub support for Anime Weapons is in development.",features:[],script:""}
 ];
 
+// Admin edits live in localStorage so the panel can preview them before they are
+// pasted back into this file; the shipped array stays the source of truth.
+const GKEY='ph_games_v1';
+const cloneGames=a=>a.map(g=>({name:g.name,icon:g.icon,tags:[...(g.tags||[])],status:g.status,roblox:g.roblox||'',desc:g.desc,features:[...(g.features||[])],script:g.script||''}));
+let games=(()=>{try{const raw=localStorage.getItem(GKEY);if(raw){const p=JSON.parse(raw);if(Array.isArray(p)&&p.length)return cloneGames(p)}}catch(e){}return cloneGames(DEFAULT_GAMES)})();
+function saveGames(){try{localStorage.setItem(GKEY,JSON.stringify(games))}catch(e){}}
+function hasLocalEdits(){try{return !!localStorage.getItem(GKEY)}catch(e){return false}}
+
 const STATUS={
   working:{label:"Working",cls:"tag-ok"},
   discontinued:{label:"Discontinued",cls:"tag-off"},
@@ -559,7 +643,7 @@ const STATUS={
 };
 const statusOf=g=>STATUS[g.status]||STATUS.working;
 
-const P={main:document.getElementById('mainPage'),about:document.getElementById('aboutPage'),game:document.getElementById('gamePage')};
+const P={main:document.getElementById('mainPage'),about:document.getElementById('aboutPage'),game:document.getElementById('gamePage'),admin:document.getElementById('adminPage')};
 let cur='main';
 function sw(to){Object.values(P).forEach(p=>{p.classList.remove('page-visible');p.classList.add('page-hidden')});setTimeout(()=>{P[to].classList.remove('page-hidden');P[to].classList.add('page-visible');window.scrollTo({top:0,behavior:'instant'})},60);cur=to;if(to==='main')setTimeout(()=>document.querySelectorAll('#mainPage .reveal:not(.active)').forEach(e=>rO.observe(e)),250);if(to==='about')setTimeout(()=>document.querySelectorAll('#aboutPage .reveal:not(.active)').forEach(e=>rO.observe(e)),250)}
 function goHome(){sw('main');history.pushState(null,'','#')}
@@ -604,7 +688,7 @@ function goToGame(idx){
   sw('game');history.pushState(null,'',`#script/${g.name.toLowerCase().replace(/\s+/g,'-')}`)
 }
 
-window.addEventListener('popstate',()=>{if(location.hash.startsWith('#script/')){const s=location.hash.replace('#script/',''),i=games.findIndex(g=>g.name.toLowerCase().replace(/\s+/g,'-')===s);i!==-1?goToGame(i):goHome()}else if(location.hash==='#about')goAbout();else goHome()});
+window.addEventListener('popstate',()=>{if(location.hash==='#adminhub'){goAdmin()}else if(location.hash.startsWith('#script/')){const s=location.hash.replace('#script/',''),i=games.findIndex(g=>g.name.toLowerCase().replace(/\s+/g,'-')===s);i!==-1?goToGame(i):goHome()}else if(location.hash==='#about')goAbout();else goHome()});
 
 const gG=document.getElementById('gameGrid'),nR=document.getElementById('noResults'),rC=document.getElementById('resultCount'),cB=document.getElementById('scriptCountBadge');
 function render(l){gG.innerHTML='';cB.textContent=l.length;if(!l.length){nR.classList.add('show');rC.textContent='';return}nR.classList.remove('show');rC.textContent=l.length===games.length?'':`${l.length} found`;l.forEach((g,i)=>{const ri=games.indexOf(g),c=document.createElement('div');c.className='glass-card rounded-xl p-4 flex flex-col';c.style.cssText=`opacity:0;transform:translateY(16px) scale(.986);filter:blur(6px);transition:opacity .55s cubic-bezier(0.23,1,0.32,1) ${i*35}ms,transform .55s cubic-bezier(0.23,1,0.32,1) ${i*35}ms,filter .55s cubic-bezier(0.23,1,0.32,1) ${i*35}ms`;const st=statusOf(g),hasScript=!!g.script;
@@ -615,9 +699,12 @@ function render(l){gG.innerHTML='';cB.textContent=l.length;if(!l.length){nR.clas
 render(games);
 
 // hero badge reflects the real data rather than a fixed claim
-(()=>{const el=document.getElementById('heroStatus');if(!el)return;
+function paintHero(){const el=document.getElementById('heroStatus');if(!el)return;
   const active=games.filter(g=>g.status==='working').length;
-  el.textContent=`${active} of ${games.length} scripts actively maintained`;})();
+  el.textContent=`${active} of ${games.length} scripts actively maintained`}
+paintHero();
+// called after every admin edit so the public pages show the new data immediately
+function refreshAll(){render(games);paintHero();if(sI)sI.value='';if(cS)cS.classList.add('hidden')}
 
 const sI=document.getElementById('gameSearch'),cS=document.getElementById('clearSearch');
 sI.addEventListener('input',e=>{const q=e.target.value.toLowerCase().trim();cS.classList.toggle('hidden',!q);render(games.filter(g=>g.name.toLowerCase().includes(q)||g.tags.some(t=>t.toLowerCase().includes(q))||g.desc.toLowerCase().includes(q)||g.features.some(f=>f.toLowerCase().includes(q))))});
@@ -636,7 +723,168 @@ document.querySelectorAll('.reveal').forEach(el=>rO.observe(el));
 
 document.querySelectorAll('.faq-toggle').forEach(t=>{t.addEventListener('click',()=>{const i=t.closest('.faq-item'),c=i.querySelector('.faq-content'),ic=i.querySelector('.faq-icon'),o=c.style.maxHeight&&c.style.maxHeight!=='0px';document.querySelectorAll('.faq-content').forEach(x=>x.style.maxHeight='0px');document.querySelectorAll('.faq-icon').forEach(x=>{x.setAttribute('data-icon','mdi:plus');x.style.transform='rotate(0)'});if(!o){c.style.maxHeight=c.scrollHeight+'px';ic.setAttribute('data-icon','mdi:minus');ic.style.transform='rotate(180deg)'}})});
 
-if(location.hash.startsWith('#script/')){const s=location.hash.replace('#script/',''),i=games.findIndex(g=>g.name.toLowerCase().replace(/\s+/g,'-')===s);if(i!==-1)setTimeout(()=>goToGame(i),120)}
+/* ============ ADMIN HUB ============ */
+// The access code is never checked in this file. The panel posts it to the VPS
+// login endpoint over HTTPS; the VPS answers yes or no and the panel obeys.
+const ADMIN_AUTH_URL='https://REPLACE-ME.example.com/login';
+const AKEY='ph_admin_session';
+
+let admUnlocked=false,admSel=0,admFilter='';
+
+function goAdmin(){sw('admin');history.pushState(null,'','#adminhub');closeMobile();
+  const tok=(()=>{try{return sessionStorage.getItem(AKEY)}catch(e){return null}})();
+  if(tok){admUnlocked=true;showPanel()}else{admUnlocked=false;showLock()}}
+
+const admLockEl=document.getElementById('admLock'),admPanelEl=document.getElementById('admPanel'),
+      admPassEl=document.getElementById('admPass'),admErrEl=document.getElementById('admErr'),
+      admListEl=document.getElementById('admList'),admEditorEl=document.getElementById('admEditor');
+
+// display is set inline as well as via the utility class, so the panel stays
+// sealed even if the Tailwind CDN fails to load
+function showLock(){admLockEl.classList.remove('hidden');admLockEl.style.display='';admPanelEl.classList.add('hidden');admPanelEl.style.display='none';admPassEl.value='';admErrEl.classList.add('hidden');setTimeout(()=>admPassEl.focus(),200)}
+function showPanel(){admLockEl.classList.add('hidden');admLockEl.style.display='none';admPanelEl.classList.remove('hidden');admPanelEl.style.display='';paintAdmin()}
+
+function admError(msg){admErrEl.textContent=msg;admErrEl.classList.remove('hidden')}
+
+async function admTryUnlock(){
+  const code=admPassEl.value.trim();
+  if(!code){admError('Enter the code.');return}
+  const btn=document.getElementById('admUnlock');
+  btn.disabled=true;btn.innerHTML='<span class="iconify text-sm" data-icon="mdi:loading"></span>Checking…';
+  try{
+    const r=await fetch(ADMIN_AUTH_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:code})});
+    if(r.status===401||r.status===403){admError('Wrong code.');admPassEl.value=''}
+    else if(!r.ok){admError('Login server error ('+r.status+').')}
+    else{
+      const d=await r.json().catch(()=>({}));
+      // accept either {ok:true} or {token:"..."}; anything else counts as a refusal
+      if(d.ok===true||d.success===true||d.token){
+        try{sessionStorage.setItem(AKEY,d.token||'ok')}catch(e){}
+        admUnlocked=true;showPanel()
+      }else{admError('Wrong code.');admPassEl.value=''}
+    }
+  }catch(e){admError('Cannot reach the login server.')}
+  btn.disabled=false;btn.innerHTML='<span class="iconify text-sm" data-icon="mdi:lock-open-variant-outline"></span>Unlock';
+}
+
+document.getElementById('admUnlock').addEventListener('click',admTryUnlock);
+admPassEl.addEventListener('keydown',e=>{if(e.key==='Enter')admTryUnlock()});
+admPassEl.addEventListener('input',()=>admErrEl.classList.add('hidden'));
+
+document.getElementById('admLockBtn').addEventListener('click',()=>{try{sessionStorage.removeItem(AKEY)}catch(e){}admUnlocked=false;showLock()});
+
+/* ---- list ---- */
+function paintAdmin(){
+  document.getElementById('admCount').textContent=`${games.length} scripts · ${games.filter(g=>g.status==='working').length} working`;
+  document.getElementById('admDirty').classList.toggle('hidden',!hasLocalEdits());
+  const q=admFilter.toLowerCase();
+  admListEl.innerHTML='';
+  games.forEach((g,i)=>{
+    if(q&&!(g.name.toLowerCase().includes(q)||g.tags.join(' ').toLowerCase().includes(q)))return;
+    const st=statusOf(g),row=document.createElement('div');
+    row.className='adm-row'+(i===admSel?' sel':'');
+    row.innerHTML=`<span class="iconify text-accent text-sm flex-shrink-0" data-icon="${g.icon}"></span>
+      <div class="min-w-0 flex-1 cursor-pointer"><div class="text-white text-[12px] font-medium truncate">${g.name||'Untitled'}</div>
+      <div class="text-[10px] text-slate-600">${st.label}${g.script?'':' · no script'}</div></div>
+      <button class="adm-mini" data-act="up" title="Move up"><span class="iconify" data-icon="mdi:chevron-up"></span></button>
+      <button class="adm-mini" data-act="down" title="Move down"><span class="iconify" data-icon="mdi:chevron-down"></span></button>
+      <button class="adm-mini danger" data-act="del" title="Delete"><span class="iconify" data-icon="mdi:trash-can-outline"></span></button>`;
+    row.querySelector('.min-w-0').addEventListener('click',()=>{admSel=i;paintAdmin()});
+    row.querySelectorAll('[data-act]').forEach(b=>b.addEventListener('click',e=>{
+      e.stopPropagation();const a=b.dataset.act;
+      if(a==='del'){if(!confirm(`Delete "${g.name}"?`))return;games.splice(i,1);if(admSel>=games.length)admSel=Math.max(0,games.length-1)}
+      else if(a==='up'&&i>0){games.splice(i-1,0,games.splice(i,1)[0]);admSel=i-1}
+      else if(a==='down'&&i<games.length-1){games.splice(i+1,0,games.splice(i,1)[0]);admSel=i+1}
+      else return;
+      commitAdmin()}));
+    admListEl.appendChild(row)
+  });
+  paintEditor()
+}
+
+function commitAdmin(){saveGames();refreshAll();paintAdmin();if(!document.getElementById('admExportWrap').classList.contains('hidden'))buildExport()}
+
+document.getElementById('admSearch').addEventListener('input',e=>{admFilter=e.target.value.trim();paintAdmin()});
+
+/* ---- editor ---- */
+function paintEditor(){
+  const g=games[admSel];
+  if(!g){admEditorEl.innerHTML='<p class="text-slate-600 text-[12px] font-light text-center py-10">No script selected. Use <span class="text-accent">Add script</span> to create one.</p>';return}
+  admEditorEl.innerHTML=`
+    <div class="flex items-center gap-2.5 mb-4">
+      <span class="iconify text-accent text-lg" data-icon="${g.icon||'mdi:puzzle-outline'}"></span>
+      <h2 class="text-white text-[14px] font-semibold flex-1 truncate">${g.name||'Untitled'}</h2>
+      <span class="tag ${statusOf(g).cls}">${statusOf(g).label}</span>
+    </div>
+    <div class="grid sm:grid-cols-2 gap-3 mb-3">
+      <div><label class="adm-label">Name</label><input class="adm-input" id="eName" value="${esc(g.name)}"></div>
+      <div><label class="adm-label">Iconify icon</label><input class="adm-input" id="eIcon" value="${esc(g.icon)}" placeholder="mdi:sprout"></div>
+      <div><label class="adm-label">Tags (comma separated)</label><input class="adm-input" id="eTags" value="${esc(g.tags.join(', '))}"></div>
+      <div><label class="adm-label">Status</label>
+        <select class="adm-input" id="eStatus">
+          <option value="working"${g.status==='working'?' selected':''}>Working</option>
+          <option value="discontinued"${g.status==='discontinued'?' selected':''}>Discontinued</option>
+          <option value="soon"${g.status==='soon'?' selected':''}>Coming soon</option>
+        </select></div>
+    </div>
+    <div class="mb-3"><label class="adm-label">Roblox link (blank hides the button)</label><input class="adm-input" id="eRoblox" value="${esc(g.roblox||'')}" placeholder="https://www.roblox.com/games/…"></div>
+    <div class="mb-3"><label class="adm-label">Description</label><textarea class="adm-input" id="eDesc" rows="2">${esc(g.desc)}</textarea></div>
+    <div class="mb-3"><label class="adm-label">Features — one per line (empty hides the card)</label><textarea class="adm-input" id="eFeat" rows="6" placeholder="AutoFarm&#10;AutoHatch">${esc(g.features.join('\n'))}</textarea></div>
+    <div class="mb-4"><label class="adm-label">Loadstring (blank disables the copy button)</label><textarea class="adm-input" id="eScript" rows="3" style="font-family:'JetBrains Mono',monospace;font-size:11px">${esc(g.script||'')}</textarea></div>
+    <div class="flex items-center gap-2 flex-wrap">
+      <button id="eSave" class="btn-primary py-2 px-4 rounded-lg text-[11px] font-semibold text-white flex items-center gap-1.5"><span class="iconify text-sm" data-icon="mdi:check"></span>Save changes</button>
+      <button id="eRevert" class="btn-secondary py-2 px-4 rounded-lg text-[11px] font-semibold">Undo edits</button>
+      <button id="eView" class="btn-secondary py-2 px-4 rounded-lg text-[11px] font-semibold flex items-center gap-1.5"><span class="iconify text-sm" data-icon="mdi:eye-outline"></span>View live page</button>
+    </div>`;
+  document.getElementById('eSave').addEventListener('click',()=>{
+    const t=id=>document.getElementById(id).value;
+    g.name=t('eName').trim()||'Untitled';
+    g.icon=t('eIcon').trim()||'mdi:puzzle-outline';
+    g.tags=t('eTags').split(',').map(x=>x.trim()).filter(Boolean);
+    g.status=t('eStatus');
+    g.roblox=t('eRoblox').trim();
+    g.desc=t('eDesc').trim();
+    g.features=t('eFeat').split('\n').map(x=>x.trim()).filter(Boolean);
+    g.script=t('eScript').trim();
+    commitAdmin();showToast('Saved')});
+  document.getElementById('eRevert').addEventListener('click',paintEditor);
+  document.getElementById('eView').addEventListener('click',()=>goToGame(admSel))
+}
+function esc(v){return String(v==null?'':v).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+/* ---- add / reset / export ---- */
+document.getElementById('admAdd').addEventListener('click',()=>{
+  games.unshift({name:'New script',icon:'mdi:puzzle-outline',tags:['Misc'],status:'soon',roblox:'',desc:'Polluted Hub support for this game is in development.',features:[],script:''});
+  admSel=0;admFilter='';document.getElementById('admSearch').value='';commitAdmin()});
+
+document.getElementById('admReset').addEventListener('click',()=>{
+  if(!confirm('Discard every local edit and go back to what the site currently ships?'))return;
+  try{localStorage.removeItem(GKEY)}catch(e){}
+  games=cloneGames(DEFAULT_GAMES);admSel=0;refreshAll();paintAdmin();
+  if(!document.getElementById('admExportWrap').classList.contains('hidden'))buildExport();
+  showToast('Reset to shipped list')});
+
+function gameLiteral(g){
+  const q=v=>JSON.stringify(String(v==null?'':v));
+  const parts=[`name:${q(g.name)}`,`icon:${q(g.icon)}`,`tags:[${g.tags.map(q).join(', ')}]`,`status:${q(g.status)}`];
+  if(g.roblox)parts.push(`roblox:${q(g.roblox)}`);
+  parts.push(`desc:${q(g.desc)}`,`features:[${g.features.map(q).join(',')}]`,`script:${q(g.script||'')}`);
+  return '{'+parts.join(',')+'}'
+}
+function buildExport(){document.getElementById('admExportCode').textContent='const DEFAULT_GAMES=[\n'+games.map(gameLiteral).join(',\n')+'\n];'}
+
+document.getElementById('admExport').addEventListener('click',()=>{
+  const w=document.getElementById('admExportWrap');
+  w.classList.toggle('hidden');
+  if(!w.classList.contains('hidden')){buildExport();w.scrollIntoView({behavior:'smooth',block:'start'})}});
+
+document.getElementById('admCopyExport').addEventListener('click',()=>{
+  const txt=document.getElementById('admExportCode').textContent;
+  navigator.clipboard.writeText(txt).then(()=>showToast('Export copied')).catch(()=>{
+    const t=document.createElement('textarea');t.value=txt;document.body.appendChild(t);t.select();document.execCommand('copy');document.body.removeChild(t);showToast('Export copied')})});
+
+if(location.hash==='#adminhub'||/\/adminhub\/?$/.test(location.pathname))setTimeout(()=>goAdmin(),120);
+else if(location.hash.startsWith('#script/')){const s=location.hash.replace('#script/',''),i=games.findIndex(g=>g.name.toLowerCase().replace(/\s+/g,'-')===s);if(i!==-1)setTimeout(()=>goToGame(i),120)}
 else if(location.hash==='#about')setTimeout(()=>goAbout(),120);
 </script>
 </body>

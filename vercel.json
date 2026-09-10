@@ -4,5 +4,11 @@
   "installCommand": null,
   "outputDirectory": ".",
   "cleanUrls": true,
-  "trailingSlash": false
+  "trailingSlash": false,
+  "rewrites": [
+    {
+      "source": "/adminhub",
+      "destination": "/index.html"
+    }
+  ]
 }
